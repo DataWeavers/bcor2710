@@ -638,6 +638,13 @@ function initialLayout(){
     if (stack.indexOf(n) >= 0) return 0;
     var ps = [];
     byName[n].fks.forEach(function(f){ if (f.table!==n && byName[f.table] && ps.indexOf(f.table)<0) ps.push(f.table); });
+    /* sketches count too: the "one" side goes left of the "many" side */
+    design.mn.forEach(function(m){
+      var aMax = m.aMax || 'many', bMax = m.bMax || 'many', par = null;
+      if (m.b === n && aMax === 'one' && bMax === 'many') par = m.a;
+      if (m.a === n && bMax === 'one' && aMax === 'many') par = m.b;
+      if (par && par !== n && byName[par] && ps.indexOf(par) < 0) ps.push(par);
+    });
     depth[n] = ps.length ? 1 + Math.max.apply(null, ps.map(function(p){return d(p, stack.concat(n));})) : 0;
     return depth[n];
   }
@@ -668,7 +675,7 @@ function initialLayout(){
     cols[k].sort(function(a,b){ return order(a)-order(b) || (a.name<b.name?-1:1); });
     var y = top;
     cols[k].forEach(function(t){
-      if (!pos[t.name]) pos[t.name] = {x: 24 + (+k)*(BOXW+90), y: y};
+      if (!pos[t.name]) pos[t.name] = {x: 24 + (+k)*(BOXW+120), y: y};
       y += boxH(t) + 28;
     });
   });
@@ -682,7 +689,7 @@ function freeSpot(t){
   }
   /* fill across first (four columns, like an arranged Access window), then down */
   for (var y = 24; y < 4000; y += 20)
-    for (var k = 0; k < 4; k++){ var x = 24 + k * (BOXW + 90); if (clear(x, y)) return {x:x, y:y}; }
+    for (var k = 0; k < 4; k++){ var x = 24 + k * (BOXW + 120); if (clear(x, y)) return {x:x, y:y}; }
   return {x:24, y:24 + Math.max.apply(null, taken.map(function(o){ return pos[o.name].y + boxH(o); }).concat([0]))};
 }
 
@@ -778,19 +785,22 @@ function drawLinks(){
     }
     if (meta.name) svgEl.append(label(o.mx, o.my - 7, meta.name, 'rn'));
   });
-  /* many-to-many sketches: drawn only, until a composite entity replaces them */
+  /* sketches: drawn only, until foreign keys (or a composite entity, for many-to-many) make them real */
+  var ends = {};   /* several sketches on one table: spread their ends down the box instead of meeting at one point */
+  function endY(t, n){ var k = (ends[t] = (ends[t] || 0) + 1) - 1; return pos[t].y + Math.min(HEAD/2 + k * ROW, boxH(byName(t)) - 8); }
   design.mn.forEach(function(m){
     if (!byName(m.a) || !byName(m.b) || !pos[m.a] || !pos[m.b]) return;
-    var ay = pos[m.a].y + HEAD/2, by = pos[m.b].y + HEAD/2;
+    var ay = endY(m.a), by = endY(m.b);
     var o = route(pos[m.a], ay, pos[m.b], by, false);
     svgEl.append(sv('path', {d:o.d, class:'mn'}));
+    var aMax = m.aMax || 'many', bMax = m.bMax || 'many', mm = aMax === 'many' && bMax === 'many';
     if (crow){
-      marks(endMark(o.cx, ay, o.cdir, m.aMin ? 1 : 0, 'many'));
-      marks(endMark(o.px, by, o.pdir, m.bMin ? 1 : 0, 'many'));
+      marks(endMark(o.cx, ay, o.cdir, m.aMin ? 1 : 0, aMax));
+      marks(endMark(o.px, by, o.pdir, m.bMin ? 1 : 0, bMax));
     } else {
-      svgEl.append(label(o.cx + o.cdir*11, ay - 6, '∞'), label(o.px + o.pdir*11, by - 6, '∞'));
+      svgEl.append(label(o.cx + o.cdir*11, ay - 6, aMax === 'one' ? '1' : '∞'), label(o.px + o.pdir*11, by - 6, bMax === 'one' ? '1' : '∞'));
     }
-    svgEl.append(label(o.mx, o.my - 7, (m.name ? m.name + ' · ' : '') + 'many-to-many', 'rn'));
+    svgEl.append(label(o.mx, o.my - 7, m.name || (mm ? 'many-to-many' : 'sketch'), 'rn'));
   });
 }
 
@@ -872,13 +882,22 @@ function run(){
   if (!sql.trim()) return;
   out.replaceChildren();
   var before = stateSig(), t0 = performance.now();
+  /* one statement at a time, so a SELECT that finds nothing still shows its columns and "0 rows" */
+  var res = [], changed = 0, ran = 0, errMsg = null;
   try {
-    var res = db.exec(sql), ms = Math.round(performance.now() - t0);
-    if (!res.length) out.append(h('p', {class:'note', text:'Statement ran. Rows changed: ' + db.getRowsModified() + '.'}));
-    res.forEach(function(r,i){ out.append(resultBlock(r, i, res.length, ms)); });
-  } catch (e) {
-    out.append(h('div', {class:'err', role:'alert'}, h('strong', {text:'SQL error: '}), e.message));
-  }
+    var it = db.iterateStatements(sql), n;
+    while (!(n = it.next()).done){
+      var st = n.value, cols = st.getColumnNames(), vals = [];
+      while (st.step()) vals.push(st.get());
+      ran++;
+      if (cols.length) res.push({columns:cols, values:vals});
+      else changed += db.getRowsModified();
+    }
+  } catch (e) { errMsg = e.message; }
+  var ms = Math.round(performance.now() - t0);
+  if (!res.length && !errMsg) out.append(h('p', {class:'note', text: ran ? 'Statement ran. Rows changed: ' + changed + '.' : 'Nothing to run: the text is only comments.'}));
+  res.forEach(function(r,i){ out.append(resultBlock(r, i, res.length, ms)); });
+  if (errMsg) out.append(h('div', {class:'err', role:'alert'}, h('strong', {text:'SQL error: '}), errMsg));
   if (stateSig() !== before) dirty = true;
   refreshAll();
 }
@@ -1313,12 +1332,15 @@ function deleteTable(name){
 }
 
 function addRelationship(r){
-  if (r.kind === 'MN'){
+  if (r.kind === 'SK' || r.kind === 'MN'){
     if (!byName(r.a) || !byName(r.b)) throw new Error('Pick two tables.');
     if (r.a === r.b) throw new Error('Pick two different tables.');
-    design.mn.push({a:r.a, b:r.b, aMin:+r.aMin || 0, bMin:+r.bMin || 0, name:(r.name || '').trim()});
+    var sk = {a:r.a, b:r.b, aMin:+r.aMin || 0, bMin:+r.bMin || 0, aMax:r.aMax === 'one' ? 'one' : 'many', bMax:r.bMax === 'one' ? 'one' : 'many', name:(r.name || '').trim()};
+    design.mn.push(sk);
     saveDesign();
-    logSql(['-- Many-to-many sketch between ' + r.a + ' and ' + r.b + ': saved in the diagram only.\n-- A database can’t store it directly; replace it with a composite entity (a table that holds both keys).']);
+    logSql(['-- Sketch between ' + r.a + ' and ' + r.b + ': saved in the diagram only, no SQL yet.\n-- ' +
+      (sk.aMax === 'many' && sk.bMax === 'many' ? 'A database can’t store many-to-many directly; replace it with a composite entity (a table that holds both keys).'
+                                                 : 'It becomes a real relationship when the table on the “many” side gets a foreign key.')]);
     return;
   }
   var parent = byName(r.parent), child = byName(r.child);
@@ -1346,6 +1368,13 @@ function addRelationship(r){
   col.fk = {table:parent.name, to:pk.name};
   runSteps(rebuildSql(cs, child.name), true);
   design.rels[child.name + '.' + col.name] = {name:(r.name || '').trim(), childMin:+r.childMin || 0};
+  /* a one-to-many or one-to-one sketch between the same two tables is now real: drop the sketch */
+  var before = design.mn.length;
+  design.mn = design.mn.filter(function(m){
+    var same = (m.a === parent.name && m.b === child.name) || (m.a === child.name && m.b === parent.name);
+    return !(same && !((m.aMax || 'many') === 'many' && (m.bMax || 'many') === 'many'));
+  });
+  r.replacedSketch = design.mn.length < before;
   saveDesign();
 }
 function deleteRelationship(tname, cname){
@@ -1442,13 +1471,17 @@ function openTableKeepMsg(name){ var keep = dState.msg; openTable(name); dState.
 function relSentence(r){
   var many = function(min){ return min ? 'one or many' : 'zero or many'; };
   var one = function(min){ return min ? 'exactly one' : 'zero or one'; };
-  if (r.kind === 'MN') return 'Each ' + r.a + ' row has ' + many(r.bMin) + ' ' + r.b + ' rows. Each ' + r.b + ' row has ' + many(r.aMin) + ' ' + r.a + ' rows.';
+  if (r.kind === 'SK' || r.kind === 'MN'){
+    var side = function(min, max, t){ return (max === 'one' ? one(min) : many(min)) + ' ' + t + (max === 'one' ? ' row' : ' rows'); };
+    return 'Each ' + r.a + ' row has ' + side(r.bMin, r.bMax || 'many', r.b) + '. Each ' + r.b + ' row has ' + side(r.aMin, r.aMax || 'many', r.a) + '.';
+  }
   var childPart = r.kind === '11' ? one(r.childMin) : many(r.childMin);
   return 'Each ' + r.parent + ' row has ' + childPart + ' ' + r.child + (r.kind === '11' ? ' row' : ' rows') + '. Each ' + r.child + ' row belongs to ' + one(r.required) + ' ' + r.parent + '.';
 }
 function defaultRel(pre){
   var names = schema.map(function(t){ return t.name; });
-  var f = {kind:'1M', parent:names[0] || '', child:names[1] || names[0] || '', fk:'__new__', newName:'', required:1, childMin:0, name:'', a:names[0] || '', b:names[1] || '', aMin:0, bMin:0};
+  var anyPk = schema.some(function(t){ return t.cols.some(function(c){ return c.pk > 0; }); });
+  var f = {kind:anyPk ? '1M' : 'SK', parent:names[0] || '', child:names[1] || names[0] || '', fk:'__new__', newName:'', required:1, childMin:0, name:'', a:names[0] || '', b:names[1] || '', aMin:0, bMin:0, aMax:'many', bMax:'many'};
   if (pre) Object.keys(pre).forEach(function(k){ f[k] = pre[k]; });
   return f;
 }
@@ -1461,11 +1494,14 @@ function renderRelForm(){
     return s;
   }
   box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Kind'}),
-    sel(f.kind, [['1M', 'One-to-many'], ['11', 'One-to-one'], ['MN', 'Many-to-many (sketch)']], function(v){ f.kind = v; }, 'Kind of relationship')));
-  if (f.kind === 'MN'){
+    sel(f.kind === 'MN' ? 'SK' : f.kind, [['SK', 'Sketch only: no keys yet'], ['1M', 'One-to-many, with a foreign key'], ['11', 'One-to-one, with a foreign key']], function(v){ f.kind = v; }, 'Kind of relationship')));
+  if (f.kind === 'SK' || f.kind === 'MN'){
+    var CARD = [['0o', 'zero or one'], ['1o', 'exactly one'], ['0m', 'zero or many'], ['1m', 'one or many']];
     box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Tables'}), sel(f.a, names, function(v){ f.a = v; }, 'First table'), h('span', {text:'and'}), sel(f.b, names, function(v){ f.b = v; }, 'Second table')));
-    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Each ' + f.a + ' has'}), sel(f.bMin, [[0, 'zero or many'], [1, 'one or many']], function(v){ f.bMin = +v; }, 'Minimum'), h('span', {text:f.b}) ));
-    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Each ' + f.b + ' has'}), sel(f.aMin, [[0, 'zero or many'], [1, 'one or many']], function(v){ f.aMin = +v; }, 'Minimum'), h('span', {text:f.a}) ));
+    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Each ' + f.a + ' has'}),
+      sel(f.bMin + (f.bMax === 'one' ? 'o' : 'm'), CARD, function(v){ f.bMin = +v[0]; f.bMax = v[1] === 'o' ? 'one' : 'many'; }, 'Each ' + f.a + ' has'), h('span', {text:f.b})));
+    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Each ' + f.b + ' has'}),
+      sel(f.aMin + (f.aMax === 'one' ? 'o' : 'm'), CARD, function(v){ f.aMin = +v[0]; f.aMax = v[1] === 'o' ? 'one' : 'many'; }, 'Each ' + f.b + ' has'), h('span', {text:f.a})));
   } else {
     var parent = byName(f.parent), pks = parent ? parent.cols.filter(function(c){ return c.pk > 0; }) : [];
     box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'The “one” side'}), sel(f.parent, names, function(v){ f.parent = v; f.fk = '__new__'; f.newName = ''; }, 'Parent table'),
@@ -1490,10 +1526,12 @@ function renderRelForm(){
   nm.addEventListener('input', function(){ f.name = nm.value; });
   box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Name (a verb)'}), nm));
   box.append(h('p', {class:'sentence', text:relSentence(f)}));
-  if (f.kind === 'MN') box.append(h('p', {class:'note', text:'A database can’t store many-to-many directly. It is drawn as a dashed line until you replace it with a composite entity: a table that holds both keys (D2).'}));
+  if (f.kind === 'SK' || f.kind === 'MN') box.append(h('p', {class:'note', text: (f.aMax === 'many' && f.bMax === 'many')
+    ? 'A database can’t store many-to-many directly. It stays a dashed sketch until you replace it with a composite entity: a table that holds both keys.'
+    : 'A sketch is drawn as a dashed line and saved with the diagram, but the database doesn’t know about it yet. It becomes real when the “many” side gets a foreign key.'}));
   var bar = h('div', {class:'row2'});
   bar.append(h('button', {class:'b primary', type:'button', onclick:function(){
-    try { addRelationship(f); dState.relForm = null; dState.msg = {err:false, text:'Relationship added. ' + relSentence(f)}; refreshAll(); }
+    try { addRelationship(f); dState.relForm = null; dState.msg = {err:false, text:'Relationship added. ' + relSentence(f) + (f.replacedSketch ? ' It replaces the sketch between these two tables.' : '')}; refreshAll(); }
     catch (e){ dState.msg = {err:true, text:e.message}; renderDesign(); }
   }}, 'Create relationship'));
   bar.append(h('button', {class:'b', type:'button', onclick:function(){ dState.relForm = null; dState.msg = null; renderDesign(); }}, 'Cancel'));
@@ -1507,7 +1545,7 @@ function relItems(){
     var meta = design.rels[r.child.name + '.' + r.from] || {};
     items.push({kind:r.one ? '11' : '1M', parent:r.parent.name, child:r.child.name, from:r.from, to:r.to, required:col.notnull || col.pk ? 1 : 0, childMin:meta.childMin || 0, name:meta.name || '', editable:r.child.editable});
   });
-  design.mn.forEach(function(m, i){ items.push({kind:'MN', a:m.a, b:m.b, aMin:m.aMin, bMin:m.bMin, name:m.name, idx:i, editable:true}); });
+  design.mn.forEach(function(m, i){ items.push({kind:'SK', a:m.a, b:m.b, aMin:m.aMin, bMin:m.bMin, aMax:m.aMax || 'many', bMax:m.bMax || 'many', name:m.name, idx:i, editable:true}); });
   return items;
 }
 function renderRelList(){
@@ -1515,19 +1553,19 @@ function renderRelList(){
   if (!items.length) return h('p', {class:'note', text:'No relationships yet. Use the button below, or drag a column onto another table’s key in the Relationships tab.'});
   var ul = h('ul', {class:'rellist'});
   items.forEach(function(it){
-    var key = it.kind === 'MN' ? 'mn:' + it.idx : 'fk:' + it.child + '.' + it.from, armed = dState.arm === key;
+    var key = it.kind === 'SK' ? 'mn:' + it.idx : 'fk:' + it.child + '.' + it.from, armed = dState.arm === key;
     var del = h('button', {class:'mini danger', type:'button', onclick:function(){
       if (!armed){ dState.arm = key; renderDesign(); return; }
       try {
-        if (it.kind === 'MN'){ design.mn.splice(it.idx, 1); saveDesign(); }
+        if (it.kind === 'SK'){ design.mn.splice(it.idx, 1); saveDesign(); }
         else deleteRelationship(it.child, it.from);
-        dState.arm = null; dState.msg = {err:false, text:'Relationship deleted.' + (it.kind === 'MN' ? '' : ' The column ' + it.child + '.' + it.from + ' stays; only the link is gone.')};
+        dState.arm = null; dState.msg = {err:false, text:'Relationship deleted.' + (it.kind === 'SK' ? '' : ' The column ' + it.child + '.' + it.from + ' stays; only the link is gone.')};
         refreshAll();
       } catch (e){ dState.arm = null; dState.msg = {err:true, text:e.message}; renderDesign(); }
     }}, armed ? 'Click again to delete' : 'Delete');
     if (!it.editable) del.disabled = true;
-    var how = it.kind === 'MN' ? 'many-to-many sketch: not built yet' : it.child + '.' + it.from + ' → ' + it.parent + '.' + it.to;
-    ul.append(h('li', {class:it.kind === 'MN' ? 'mnitem' : ''}, h('div', null, h('strong', {text:(it.name ? '“' + it.name + '” · ' : '')}), relSentence(it)),
+    var how = it.kind === 'SK' ? (it.aMax === 'many' && it.bMax === 'many' ? 'many-to-many sketch: needs a composite entity' : 'sketch: no foreign key yet') : it.child + '.' + it.from + ' → ' + it.parent + '.' + it.to;
+    ul.append(h('li', {class:it.kind === 'SK' ? 'mnitem' : ''}, h('div', null, h('strong', {text:(it.name ? '“' + it.name + '” · ' : '')}), relSentence(it)),
       h('div', {class:'how'}, h('span', {text:how}), del)));
   });
   return ul;
