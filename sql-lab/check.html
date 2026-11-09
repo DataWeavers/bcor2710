@@ -111,10 +111,82 @@ table.data tbody tr:last-child td{border-bottom:none}
 .warn{font-size:12.5px;color:var(--err);margin:6px 0 0}
 .err{background:var(--err-soft);color:var(--err);border:1px solid var(--err);border-radius:6px;padding:10px 14px;font-size:14px}
 .note{color:var(--ink-soft);margin:0}
+
+/* diagram extras: crow's foot, many-to-many sketches, relationship names, drag to relate */
+svg.links line{stroke:var(--link);stroke-width:1.6}
+svg.links circle.o{fill:var(--surface);stroke:var(--link);stroke-width:1.6}
+svg.links path.mn{stroke-dasharray:6 4}
+svg.links text.rn{font:italic 500 12.5px var(--sans);fill:var(--ink-soft);paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round}
+svg.links line.dragline{stroke:var(--accent);stroke-width:2;stroke-dasharray:5 4}
+.tbox.linkable .col{cursor:crosshair;touch-action:none;user-select:none}
+.tbox .col.drop{background:var(--fk-soft);box-shadow:inset 0 0 0 2px var(--fk)}
+.tbox .hd.drop{box-shadow:inset 0 0 0 3px var(--fk)}
+.relbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:0 0 10px}
+.relbar .lead{margin:0;flex:1 1 420px}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:5px;overflow:hidden;background:var(--surface)}
+.seg button{all:unset;cursor:pointer;padding:5px 10px;font:500 12.5px var(--sans);color:var(--ink-soft)}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* design tab */
+#design{max-width:1040px}
+.dh{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:18px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{all:unset;cursor:pointer;padding:6px 11px;border:1px solid var(--rule);border-radius:999px;background:var(--surface);font:500 13px var(--sans)}
+.chip:hover{background:var(--sunk)}
+.chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.editor,.relform,.rowform{margin:12px 0 4px;padding:14px;border:1px solid var(--rule);border-radius:6px;background:var(--surface)}
+.rowform .dh{margin-top:0}
+.row1{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 12px}
+.row1 .label{margin:0}
+.row2{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0 0}
+#design input[type=text],#design select,.rowform input{font:14px var(--sans);padding:5px 8px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink);min-width:0}
+#design input[type=text]:disabled,#design select:disabled{background:var(--sunk);color:var(--ink-soft)}
+.row1 input[type=text]{font-weight:600;width:16em}
+.scroll.wide{width:auto}
+table.cols{border-collapse:collapse;width:100%;font-size:13.5px}
+table.cols th{text-align:left;font:600 11.5px var(--mono);color:var(--ink-faint);padding:6px 8px;background:var(--sunk);border-bottom:1px solid var(--rule);white-space:nowrap}
+table.cols td{padding:5px 8px;border-bottom:1px solid var(--rule-soft);vertical-align:middle}
+table.cols tbody tr:last-child td{border-bottom:none}
+table.cols td input[type=text]{width:100%}
+table.cols td:first-child{min-width:150px}
+table.cols td:nth-child(5){min-width:220px;width:40%}
+table.cols td.cb{text-align:center}
+table.cols td.fkc{font:12px var(--mono);color:var(--fk);white-space:nowrap}
+td.act{white-space:nowrap;text-align:right}
+input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent)}
+button.mini{font:600 12px var(--sans);padding:3px 8px;border:1px solid var(--rule);background:var(--surface);color:var(--ink-soft);border-radius:4px;cursor:pointer;margin-left:4px}
+button.mini:hover{background:var(--sunk);color:var(--ink)}
+button.mini:disabled,button.b:disabled{opacity:.5;cursor:not-allowed}
+button.danger{color:var(--err);border-color:var(--err)}
+button.danger:hover{background:var(--err-soft)}
+.frow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 8px}
+.flab{min-width:190px;font-size:13.5px;color:var(--ink-soft)}
+.sentence{margin:12px 0 0;padding:9px 12px;background:var(--accent-soft);border-radius:5px;font-size:14px}
+.rellist{list-style:none;margin:0;padding:0;border:1px solid var(--rule);border-radius:6px;background:var(--surface)}
+.rellist li{padding:9px 12px;font-size:14px}
+.rellist li+li{border-top:1px solid var(--rule-soft)}
+.rellist li.mnitem{background:repeating-linear-gradient(135deg,transparent 0 10px,var(--sunk) 10px 11px)}
+.rellist .how{display:flex;justify-content:space-between;align-items:center;gap:10px;font:12px var(--mono);color:var(--ink-faint);margin-top:3px}
+.msg{margin:10px 0 0;font-size:14px}
+.msg:empty{display:none}
+.msg.good{color:var(--fk);font-weight:600}
+.msg.bad{background:var(--err-soft);color:var(--err);border:1px solid var(--err);border-radius:6px;padding:9px 12px}
+.logbox{margin:20px 0 0;border:1px solid var(--rule);border-radius:6px;background:var(--surface)}
+.logbox summary{cursor:pointer;padding:8px 12px;font-weight:600;font-size:13.5px}
+pre.log{margin:0;padding:10px 12px;border-top:1px solid var(--rule-soft);font:12.5px/1.45 var(--mono);white-space:pre-wrap;max-height:360px;overflow:auto;background:var(--sunk)}
+.rfgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px 12px}
+.rfgrid label{display:flex;flex-direction:column;gap:3px;font:600 12px var(--mono);color:var(--ink-soft)}
+.rfgrid input{width:100%}
 @media (max-width:760px){
   .app{grid-template-columns:1fr;padding:12px 16px}
   .btns{flex-direction:row;flex-wrap:wrap}
   #diagram{height:420px}
+  [role=tablist]{overflow-x:auto}
+  [role=tab]{padding:9px 11px}
+  .flab{min-width:0;flex-basis:100%}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -147,13 +219,25 @@ table.data tbody tr:last-child td{border-bottom:none}
   <main>
     <div role="tablist" aria-label="Views">
       <button role="tab" id="tab-rel" aria-controls="p-rel" aria-selected="true">Relationships</button>
+      <button role="tab" id="tab-design" aria-controls="p-design" aria-selected="false">Design</button>
       <button role="tab" id="tab-browse" aria-controls="p-browse" aria-selected="false">Browse</button>
       <button role="tab" id="tab-query" aria-controls="p-query" aria-selected="false">Query</button>
     </div>
 
     <section id="p-rel" role="tabpanel" aria-labelledby="tab-rel">
-      <p class="lead">Each box is a table. A line joins a foreign key (FK) to the primary key (PK) it points to: <b>1</b> on the PK side, <b>∞</b> on the FK side. Drag a table by its title to rearrange.</p>
+      <div class="relbar">
+        <p class="lead" id="rel-lead"></p>
+        <button class="b" id="arrange" type="button" title="Parents on the left, the tables that point to them on the right">Arrange</button>
+        <div class="seg" role="group" aria-label="Line ends">
+          <button type="button" id="not-ones" aria-pressed="true">1 and ∞</button>
+          <button type="button" id="not-crow" aria-pressed="false">Crow’s foot</button>
+        </div>
+      </div>
       <div id="diagram"><div class="stage" id="stage"></div></div>
+    </section>
+
+    <section id="p-design" role="tabpanel" aria-labelledby="tab-design" hidden>
+      <div id="design"></div>
     </section>
 
     <section id="p-browse" role="tabpanel" aria-labelledby="tab-browse" hidden>
@@ -397,7 +481,8 @@ var BUILTIN = {
     file: 'my-database.db',
     sql: '',
     starter: [
-      '-- An empty database. Create your own tables here, then Run.',
+      '-- An empty database. Build tables in the Design tab (no SQL needed),',
+      '-- or write CREATE TABLE here and Run.',
       '-- Parent tables first: a table with a foreign key needs its parent to exist.',
       'CREATE TABLE Owners (',
       '  OwnerID   INTEGER PRIMARY KEY,',
@@ -462,15 +547,28 @@ function rows(sql){
 
 /* ---------- schema ---------- */
 function readSchema(){
-  var meta = rows("SELECT name, sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name");
+  var meta = rows("SELECT name, sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND substr(name, 1, 7) <> '_sqllab' ORDER BY name");
   schema = meta.map(function(m){
     var name = m.name;
     var cols = rows('PRAGMA table_info(' + qi(name) + ')');
     var fks = rows('PRAGMA foreign_key_list(' + qi(name) + ')');
     var n = 0; try { n = rows('SELECT COUNT(*) AS n FROM ' + qi(name))[0].n; } catch(e){}
     var notes = columnNotes(m.sql || '', cols);
-    cols.forEach(function(c){ c.note = notes[c.name] || ''; });
-    return {name:name, cols:cols, fks:fks, count:n, sql:m.sql || ''};
+    /* can the Design tab rebuild this table without losing a rule? */
+    var info = parseCreate(m.sql || ''), editable = info.ok, why = info.why, groups = {};
+    fks.forEach(function(f){
+      groups[f.id] = (groups[f.id] || 0) + 1;
+      if ((f.on_delete && f.on_delete !== 'NO ACTION') || (f.on_update && f.on_update !== 'NO ACTION')){ editable = false; why = 'ON DELETE/UPDATE rules'; }
+    });
+    if (Object.keys(groups).some(function(k){ return groups[k] > 1; })){ editable = false; why = 'a two-column foreign key'; }
+    cols.forEach(function(c){
+      var p = info.cols[c.name] || {};
+      c.note = notes[c.name] || '';
+      c.kind = p.kind || baseKind(c.type);
+      c.shown = p.kind ? kindLabel(p.kind) : (c.type || '').toLowerCase();
+      c.unique = !!p.unique;
+    });
+    return {name:name, cols:cols, fks:fks, count:n, sql:m.sql || '', editable:editable, why:why};
   });
   var byName = {}; schema.forEach(function(t){byName[t.name]=t;});
   // resolve FK targets that omit the parent column (REFERENCES Parent)
@@ -506,12 +604,13 @@ function relationships(){
     if (!parent) return;
     out.push({child:t, parent:parent, from:f.from, to:f.to, group:t.name+'#'+f.id});
   });});
-  // one-to-one when the FK columns are exactly the child's primary key
+  // one-to-one when the FK columns are exactly the child's primary key, or one UNIQUE column
   out.forEach(function(r){
     var group = out.filter(function(x){return x.group===r.group;});
     var pk = r.child.cols.filter(function(c){return c.pk>0;}).map(function(c){return c.name;}).sort().join(',');
     var fk = group.map(function(x){return x.from;}).sort().join(',');
-    r.one = (pk && pk===fk);
+    var col = r.child.cols.filter(function(c){ return c.name === r.from; })[0];
+    r.one = !!((pk && pk===fk) || (group.length === 1 && col && col.unique));
   });
   return out;
 }
@@ -544,6 +643,11 @@ function initialLayout(){
   }
   var fixed = (!fromFile && BUILTIN[dbKey] && BUILTIN[dbKey].layout) || {};
   schema.forEach(function(t){ if (!pos[t.name] && fixed[t.name]) pos[t.name] = {x: fixed[t.name][0], y: fixed[t.name][1]}; });
+  /* a table added to a diagram that is already laid out goes into the first free spot */
+  if (!Object.keys(fixed).length && schema.some(function(t){ return pos[t.name]; })){
+    schema.forEach(function(t){ if (!pos[t.name]) pos[t.name] = freeSpot(t); });
+    return;
+  }
   var cols = {};
   schema.forEach(function(t){ if (fixed[t.name]) return; var k=d(t.name,[]); (cols[k]=cols[k]||[]).push(t); });
   // order each column so lines to the same child table cross as little as possible:
@@ -570,26 +674,56 @@ function initialLayout(){
   });
 }
 
+function freeSpot(t){
+  var hgt = boxH(t), taken = schema.filter(function(o){ return o !== t && pos[o.name]; });
+  function clear(x, y){
+    return taken.every(function(o){ var p = pos[o.name];
+      return x + BOXW + 40 <= p.x || p.x + BOXW + 40 <= x || y + hgt + 28 <= p.y || p.y + boxH(o) + 28 <= y; });
+  }
+  /* fill across first (four columns, like an arranged Access window), then down */
+  for (var y = 24; y < 4000; y += 20)
+    for (var k = 0; k < 4; k++){ var x = 24 + k * (BOXW + 90); if (clear(x, y)) return {x:x, y:y}; }
+  return {x:24, y:24 + Math.max.apply(null, taken.map(function(o){ return pos[o.name].y + boxH(o); }).concat([0]))};
+}
+
+function relLead(){
+  var base = notation === 'crow'
+    ? 'Each box is a table. A line joins a foreign key (FK) to the primary key (PK) it points to. Crow’s foot: the mark next to the box is the maximum (bar = one, three prongs = many); the outer mark is the minimum (circle = zero, bar = one).'
+    : 'Each box is a table. A line joins a foreign key (FK) to the primary key (PK) it points to: 1 on the PK side, ∞ on the FK side.';
+  base += ' Drag a table by its title to rearrange.';
+  if (editableDb()) base += ' To relate two tables, drag a column onto the other table’s PK, or drag a PK onto another table’s title to add a foreign key there.';
+  $('#rel-lead').textContent = base;
+  $('#not-ones').setAttribute('aria-pressed', String(notation !== 'crow'));
+  $('#not-crow').setAttribute('aria-pressed', String(notation === 'crow'));
+}
+
 var boxEls = {}, svgEl;
 function renderDiagram(){
   var stage = $('#stage'); stage.replaceChildren(); boxEls = {};
+  relLead();
   initialLayout();
   svgEl = sv('svg', {class:'links', 'aria-hidden':'true'});
   stage.append(svgEl);
-  if (!schema.length){ stage.style.width='100%'; stage.style.height='120px'; stage.append(h('p',{class:'note',style:'padding:20px'},'This database has no tables.')); return; }
-  var fkSet = {};
+  if (!schema.length){
+    stage.style.width='100%'; stage.style.height='120px';
+    stage.append(h('p',{class:'note',style:'padding:20px'}, editableDb() ? 'No tables yet. Build one in the Design tab, or with CREATE TABLE in the Query tab.' : 'This database has no tables.'));
+    return;
+  }
+  var fkSet = {}, linkable = editableDb();
   schema.forEach(function(t){
     fkSet[t.name] = {}; t.fks.forEach(function(f){ fkSet[t.name][f.from] = true; });
-    var hd = h('div', {class:'hd'}, h('span', {text:t.name}), h('small', {text:t.count + (t.count===1?' row':' rows')}));
-    var box = h('div', {class:'tbox'}, hd);
+    var hd = h('div', {class:'hd', 'data-t':t.name}, h('span', {text:t.name}), h('small', {text:t.count + (t.count===1?' row':' rows')}));
+    var box = h('div', {class:'tbox' + (linkable ? ' linkable' : '')}, hd);
     t.cols.forEach(function(c){
       var isPk = c.pk>0, isFk = !!fkSet[t.name][c.name];
       var tag = isPk && isFk ? 'PK FK' : isPk ? 'PK' : isFk ? 'FK' : '';
-      var attrs = {class:'col' + (isPk?' pk':'') + (c.note?' has-note':'')};
+      var attrs = {class:'col' + (isPk?' pk':'') + (c.note?' has-note':''), 'data-t':t.name, 'data-c':c.name};
       if (c.note) attrs.title = c.name + ': ' + c.note;
-      box.append(h('div', attrs,
+      var row = h('div', attrs,
         h('span', {class:'badge ' + (tag==='' ? 'none' : isPk ? 'pk' : 'fk'), text: tag || ' '}),
-        h('span', {class:'nm', text:c.name}), h('span', {class:'ty', text:(c.type||'').toLowerCase()})));
+        h('span', {class:'nm', text:c.name}), h('span', {class:'ty', text:c.shown}));
+      if (linkable) enableLink(row, t.name, c.name);
+      box.append(row);
     });
     box.style.left = pos[t.name].x + 'px'; box.style.top = pos[t.name].y + 'px';
     stage.append(box); boxEls[t.name] = box;
@@ -598,55 +732,87 @@ function renderDiagram(){
   drawLinks();
 }
 
+function label(x, y, text, cls){ var t = sv('text', cls ? {x:x, y:y, class:cls} : {x:x, y:y}); t.textContent = text; return t; }
 function drawLinks(){
-  var maxX = 0, maxY = 0;
+  var maxX = 0, maxY = 0, crow = notation === 'crow', stub = crow ? 36 : STUB;
   schema.forEach(function(t){ var p=pos[t.name]; maxX=Math.max(maxX,p.x+BOXW); maxY=Math.max(maxY,p.y+boxH(t)); });
-  var W = maxX + 70, H = maxY + 40, stage = $('#stage');
+  var W = maxX + 90, H = maxY + 40, stage = $('#stage');
   stage.style.width = W + 'px'; stage.style.height = H + 'px';
   svgEl.setAttribute('width', W); svgEl.setAttribute('height', H);
   svgEl.replaceChildren();
   var side = 0;
+  function route(cp, cy, pp, py, self){
+    var o = {};
+    if (self){
+      o.cx = cp.x + BOXW; o.px = o.cx; o.cdir = 1; o.pdir = 1;
+      o.d = 'M'+o.cx+','+cy+' H'+(o.cx+stub+10)+' V'+py+' H'+o.px; o.mx = o.cx + stub + 10; o.my = (cy + py) / 2;
+    } else if (Math.abs(cp.x - pp.x) < BOXW * 0.75){
+      /* stacked in one column: run the line down the right-hand side */
+      var gx = Math.max(cp.x, pp.x) + BOXW + stub + 8 * (side++);
+      o.cx = cp.x + BOXW; o.px = pp.x + BOXW; o.cdir = 1; o.pdir = 1;
+      o.d = 'M'+o.cx+','+cy+' H'+gx+' V'+py+' H'+o.px; o.mx = gx; o.my = (cy + py) / 2;
+    } else {
+      var childRight = (cp.x + BOXW/2) < (pp.x + BOXW/2);
+      o.cx = childRight ? cp.x + BOXW : cp.x; o.cdir = childRight ? 1 : -1;
+      o.px = childRight ? pp.x : pp.x + BOXW; o.pdir = childRight ? -1 : 1;
+      o.d = 'M'+o.cx+','+cy+' H'+(o.cx+o.cdir*stub)+' L'+(o.px+o.pdir*stub)+','+py+' H'+o.px;
+      o.mx = (o.cx + o.cdir*stub + o.px + o.pdir*stub) / 2; o.my = (cy + py) / 2;
+    }
+    return o;
+  }
+  function marks(list){ list.forEach(function(e){ svgEl.append(e); }); }
   relationships().forEach(function(r){
     var cp = pos[r.child.name], pp = pos[r.parent.name];
     var ci = r.child.cols.findIndex(function(c){return c.name===r.from;});
     var pi = r.parent.cols.findIndex(function(c){return c.name===r.to;});
     if (ci<0 || pi<0) return;
     var cy = cp.y + HEAD + ci*ROW + ROW/2, py = pp.y + HEAD + pi*ROW + ROW/2;
-    var d, cx, px, cdir, pdir;
-    if (r.child === r.parent){
-      cx = cp.x + BOXW; px = cx; cdir = 1; pdir = 1;
-      d = 'M'+cx+','+cy+' H'+(cx+26)+' V'+py+' H'+px;
-    } else if (Math.abs(cp.x - pp.x) < BOXW * 0.75){
-      /* stacked in one column: run the line down the right-hand side */
-      var gx = Math.max(cp.x, pp.x) + BOXW + STUB + 8 * (side++);
-      cx = cp.x + BOXW; px = pp.x + BOXW; cdir = 1; pdir = 1;
-      d = 'M'+cx+','+cy+' H'+gx+' V'+py+' H'+px;
+    var o = route(cp, cy, pp, py, r.child === r.parent);
+    svgEl.append(sv('path', {d:o.d}));
+    var col = r.child.cols[ci], meta = design.rels[r.child.name + '.' + r.from] || {};
+    if (crow){
+      marks(endMark(o.cx, cy, o.cdir, meta.childMin ? 1 : 0, r.one ? 'one' : 'many'));
+      marks(endMark(o.px, py, o.pdir, (col.notnull || col.pk) ? 1 : 0, 'one'));
     } else {
-      var childRight = (cp.x + BOXW/2) < (pp.x + BOXW/2);
-      cx = childRight ? cp.x + BOXW : cp.x; cdir = childRight ? 1 : -1;
-      px = childRight ? pp.x : pp.x + BOXW; pdir = childRight ? -1 : 1;
-      d = 'M'+cx+','+cy+' H'+(cx+cdir*STUB)+' L'+(px+pdir*STUB)+','+py+' H'+px;
+      svgEl.append(label(o.cx + o.cdir*11, cy - 6, r.one ? '1' : '∞'), label(o.px + o.pdir*11, py - 6, '1'));
     }
-    svgEl.append(sv('path', {d:d}));
-    var t1 = sv('text', {x: cx + cdir*11, y: cy - 6}); t1.textContent = r.one ? '1' : '∞';
-    var t2 = sv('text', {x: px + pdir*11, y: py - 6}); t2.textContent = '1';
-    svgEl.append(t1, t2);
+    if (meta.name) svgEl.append(label(o.mx, o.my - 7, meta.name, 'rn'));
+  });
+  /* many-to-many sketches: drawn only, until a composite entity replaces them */
+  design.mn.forEach(function(m){
+    if (!byName(m.a) || !byName(m.b) || !pos[m.a] || !pos[m.b]) return;
+    var ay = pos[m.a].y + HEAD/2, by = pos[m.b].y + HEAD/2;
+    var o = route(pos[m.a], ay, pos[m.b], by, false);
+    svgEl.append(sv('path', {d:o.d, class:'mn'}));
+    if (crow){
+      marks(endMark(o.cx, ay, o.cdir, m.aMin ? 1 : 0, 'many'));
+      marks(endMark(o.px, by, o.pdir, m.bMin ? 1 : 0, 'many'));
+    } else {
+      svgEl.append(label(o.cx + o.cdir*11, ay - 6, '∞'), label(o.px + o.pdir*11, by - 6, '∞'));
+    }
+    svgEl.append(label(o.mx, o.my - 7, (m.name ? m.name + ' · ' : '') + 'many-to-many', 'rn'));
   });
 }
 
+function persistLayout(){
+  if (!editableDb() || !schema.length) return;
+  schema.forEach(function(t){ if (pos[t.name]) design.pos[t.name] = [Math.round(pos[t.name].x), Math.round(pos[t.name].y)]; });
+  saveDesign();
+}
 function enableDrag(name, handle){
-  var sx, sy, ox, oy, active = false;
+  var sx, sy, ox, oy, active = false, moved = false;
   handle.addEventListener('pointerdown', function(e){
-    active = true; sx = e.clientX; sy = e.clientY; ox = pos[name].x; oy = pos[name].y;
+    active = true; moved = false; sx = e.clientX; sy = e.clientY; ox = pos[name].x; oy = pos[name].y;
     handle.setPointerCapture(e.pointerId); e.preventDefault();
   });
   handle.addEventListener('pointermove', function(e){
     if (!active) return;
+    moved = true;
     pos[name].x = Math.max(0, ox + e.clientX - sx); pos[name].y = Math.max(0, oy + e.clientY - sy);
     boxEls[name].style.left = pos[name].x + 'px'; boxEls[name].style.top = pos[name].y + 'px';
     drawLinks();
   });
-  function end(){ active = false; }
+  function end(){ if (active && moved) persistLayout(); active = false; }
   handle.addEventListener('pointerup', end); handle.addEventListener('pointercancel', end);
 }
 
@@ -680,13 +846,17 @@ function renderBrowse(){
     var dl = h('table', {class:'dict'}, h('thead', null, h('tr', null, h('th', {text:'Column'}), h('th', {text:'Type'}), h('th', {text:'Meaning'}))),
       h('tbody', null, t.cols.map(function(c){
         var key = (c.pk>0 ? 'PK ' : '') + (fkCols[c.name] ? 'FK → ' + fkCols[c.name] : '');
-        return h('tr', null, h('td', {class:'cn', text:c.name}), h('td', {class:'ct', text:((c.type||'').toLowerCase() + (key ? ' · ' + key.trim() : ''))}), h('td', {text:c.note || ''}));
+        return h('tr', null, h('td', {class:'cn', text:c.name}), h('td', {class:'ct', text:(c.shown + (key ? ' · ' + key.trim() : ''))}), h('td', {text:c.note || ''}));
       })));
     box.append(h('details', {class:'dictbox', open:'open'}, h('summary', {text:'What the columns mean'}), dl));
   }
-  var r = db.exec('SELECT * FROM ' + qi(t.name) + ' LIMIT 200');
-  if (r.length) box.append(dataTable(r[0].columns, r[0].values, 200));
-  else box.append(h('p', {class:'note', text:'This table has no rows yet.'}));
+  if (editableDb()){
+    box.append(rowForm(t), editableRows(t));
+  } else {
+    var r = db.exec('SELECT * FROM ' + qi(t.name) + ' LIMIT 200');
+    if (r.length) box.append(dataTable(r[0].columns, r[0].values, 200));
+    else box.append(h('p', {class:'note', text:'This table has no rows yet.'}));
+  }
   box.append(h('p', null, h('button', {class:'b', type:'button', onclick:function(){
     $('#sql').value = 'SELECT *\nFROM ' + qi(t.name) + ';'; select('query'); $('#sql').focus();
   }}, 'Open in the Query tab')));
@@ -714,8 +884,9 @@ function run(){
 }
 
 /* ---------- tabs ---------- */
+var TABS = ['rel','design','browse','query'];
 function select(which){
-  ['rel','browse','query'].forEach(function(k){
+  TABS.forEach(function(k){
     var on = (k===which);
     $('#tab-'+k).setAttribute('aria-selected', String(on));
     $('#tab-'+k).tabIndex = on ? 0 : -1;
@@ -723,24 +894,33 @@ function select(which){
   });
 }
 function wireTabs(){
-  var order = ['rel','browse','query'];
+  var order = TABS, n = order.length;
   order.forEach(function(k,i){
     var el = $('#tab-'+k);
     el.addEventListener('click', function(){ select(k); });
     el.addEventListener('keydown', function(e){
-      var j = e.key==='ArrowRight' ? (i+1)%3 : e.key==='ArrowLeft' ? (i+2)%3 : -1;
+      var j = e.key==='ArrowRight' ? (i+1)%n : e.key==='ArrowLeft' ? (i+n-1)%n : e.key==='Home' ? 0 : e.key==='End' ? n-1 : -1;
       if (j>=0){ select(order[j]); $('#tab-'+order[j]).focus(); e.preventDefault(); }
     });
   });
 }
 
 /* ---------- lifecycle ---------- */
-function refreshAll(){ readSchema(); renderList(); renderDiagram(); if (!$('#p-browse').hidden || current) renderBrowse(); }
+function refreshAll(){
+  readSchema();
+  if (dState.table && dState.table !== '__new__' && !byName(dState.table)){ dState.table = null; dState.draft = null; }
+  renderList(); renderDiagram(); renderDesign();
+  if (!$('#p-browse').hidden || current) renderBrowse();
+}
 
 /* sql.js export() closes and reopens the database, which resets PRAGMAs, so turn foreign keys back on */
 function exportDb(){ var bytes = db.export(); db.run('PRAGMA foreign_keys = ON;'); return bytes; }
 
-function resetView(){ pos = {}; current = null; $('#results').replaceChildren(); hideAi(); hideWarn(); }
+function resetView(){
+  pos = {}; current = null; sqlLog = []; dState = {table:null, draft:null, relForm:null, arm:null, msg:null};
+  $('#results').replaceChildren(); hideAi(); hideWarn();
+  loadDesign();
+}
 
 function loadBuiltIn(key){
   if (!BUILTIN[key]) key = 'bluff';
@@ -771,7 +951,7 @@ function hideWarn(){ var w = $('#pickwarn'); w.hidden = true; w.textContent = ''
 
 /* ---------- schema for AI ---------- */
 function schemaText(){
-  var stm = rows("SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND sql IS NOT NULL ORDER BY rowid")
+  var stm = rows("SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND substr(name, 1, 7) <> '_sqllab' AND sql IS NOT NULL ORDER BY rowid")
     .map(function(r){ return r.sql + ';'; });
   return '-- SQLite database: ' + dbLabel + '\n' +
          '-- Table definitions only, no data rows. Text after -- explains what a column means.\n\n' +
@@ -806,6 +986,10 @@ function showAi(){
 
 function boot(){
   wireTabs(); select('rel');
+  function setNotation(n){ notation = n; try { localStorage.setItem('sqllab:notation', n); } catch(e){} relLead(); if (svgEl) drawLinks(); }
+  $('#not-ones').addEventListener('click', function(){ setNotation('ones'); });
+  $('#not-crow').addEventListener('click', function(){ setNotation('crow'); });
+  $('#arrange').addEventListener('click', function(){ pos = {}; design.pos = {}; renderDiagram(); persistLayout(); });
   $('#sql').addEventListener('input', saveQueryText);
   $('#sql').addEventListener('keydown', function(e){ if ((e.ctrlKey||e.metaKey) && e.key==='Enter'){ e.preventDefault(); saveQueryText(); run(); } });
   $('#run').addEventListener('click', function(){ saveQueryText(); run(); });
@@ -834,6 +1018,7 @@ function boot(){
     }
     armed = null;
     if (want === 'file') loadFile(fileBytes, fileName); else loadBuiltIn(want);
+    if (want === 'empty' && !schema.length) select('design');
   });
   $('#openfile').addEventListener('change', function(e){
     var f = e.target.files[0]; if (!f) return;
@@ -860,10 +1045,666 @@ function boot(){
   });
   $('#aischema').addEventListener('click', showAi);
   window.addEventListener('beforeunload', function(e){ if (dirty) { e.preventDefault(); e.returnValue = ''; } });
-  var start = 'bluff';
-  try { var want = new URLSearchParams(location.search).get('db'); if (want && BUILTIN[want]) start = want; } catch(e){}
+  var start = 'bluff', tab = null;
+  try {
+    var qs = new URLSearchParams(location.search), want = qs.get('db');
+    if (want && BUILTIN[want]) start = want;
+    if (TABS.indexOf(qs.get('tab')) >= 0) tab = qs.get('tab');
+  } catch(e){}
   loadBuiltIn(start);
+  select(tab || (start === 'empty' ? 'design' : 'rel'));
 }
+
+/* ======================= Design: build tables and relationships without SQL ======================= */
+/* Every change is real SQL: CREATE TABLE for a new table, and SQLite's safe rebuild
+   (create new, copy rows, drop old, rename) for changes. The SQL appears in the log.
+   Layout, relationship names and many-to-many sketches live in a hidden table
+   (_sqllab_design) so they travel with "Download my copy". */
+var META = '_sqllab_design';
+var KINDS = [['TEXT', 'TEXT'], ['INTEGER', 'INTEGER'], ['REAL', 'REAL'], ['DATE', 'DATE (YYYY-MM-DD)'], ['YESNO', 'YES/NO (0 or 1)']];
+var RESERVED = {};
+('ABORT ACTION ADD AFTER ALL ALTER ANALYZE AND AS ASC ATTACH AUTOINCREMENT BEFORE BEGIN BETWEEN BY CASCADE CASE CAST CHECK COLLATE COLUMN COMMIT ' +
+ 'CONFLICT CONSTRAINT CREATE CROSS CURRENT_DATE CURRENT_TIME CURRENT_TIMESTAMP DATABASE DEFAULT DEFERRABLE DEFERRED DELETE DESC DETACH DISTINCT DROP ' +
+ 'EACH ELSE END ESCAPE EXCEPT EXCLUSIVE EXISTS EXPLAIN FAIL FILTER FOR FOREIGN FROM FULL GLOB GROUP HAVING IF IGNORE IMMEDIATE IN INDEX INDEXED ' +
+ 'INITIALLY INNER INSERT INSTEAD INTERSECT INTO IS ISNULL JOIN KEY LEFT LIKE LIMIT MATCH NATURAL NO NOT NOTNULL NULL OF OFFSET ON OR ORDER OUTER ' +
+ 'OVER PARTITION PLAN PRAGMA PRIMARY QUERY RAISE RANGE RECURSIVE REFERENCES REGEXP REINDEX RELEASE RENAME REPLACE RESTRICT RIGHT ROLLBACK ROW ROWS ' +
+ 'SAVEPOINT SELECT SET TABLE TEMP TEMPORARY THEN TO TRANSACTION TRIGGER UNION UNIQUE UPDATE USING VACUUM VALUES VIEW VIRTUAL WHEN WHERE WINDOW WITH WITHOUT')
+  .split(' ').forEach(function(w){ RESERVED[w] = true; });
+
+var design = {pos:{}, rels:{}, mn:[]}, sqlLog = [], notation = 'ones';
+var dState = {table:null, draft:null, relForm:null, arm:null, msg:null};
+try { notation = localStorage.getItem('sqllab:notation') || 'ones'; } catch(e){}
+
+function editableDb(){ return fromFile || dbKey !== 'bluff'; }
+function byName(n){ return schema.filter(function(t){ return t.name === n; })[0]; }
+function metaExists(){ return rows("SELECT 1 AS x FROM sqlite_master WHERE type='table' AND name='" + META + "'").length > 0; }
+
+function loadDesign(){
+  design = {pos:{}, rels:{}, mn:[]};
+  try {
+    if (metaExists()){
+      var r = rows('SELECT value FROM ' + META + " WHERE key='design'");
+      if (r.length){ var d = JSON.parse(r[0].value); design.pos = d.pos || {}; design.rels = d.rels || {}; design.mn = d.mn || []; }
+    }
+  } catch(e){}
+  Object.keys(design.pos).forEach(function(n){ var p = design.pos[n]; if (p && isFinite(p[0]) && isFinite(p[1])) pos[n] = {x:p[0], y:p[1]}; });
+}
+function saveDesign(){
+  db.run('CREATE TABLE IF NOT EXISTS ' + META + ' (key TEXT PRIMARY KEY, value TEXT)');
+  db.run('INSERT OR REPLACE INTO ' + META + " (key, value) VALUES ('design', ?)", [JSON.stringify(design)]);
+  dirty = true;
+}
+function logSql(stmts){
+  stmts.forEach(function(s){ sqlLog.push(s); });
+  if (sqlLog.length > 60) sqlLog = sqlLog.slice(-60);
+}
+
+/* ---------- reading what a CREATE TABLE says ---------- */
+function stripComments(sql){ return sql.replace(/--[^\n]*/g, '').replace(/\/\*[\s\S]*?\*\//g, ''); }
+function splitTop(body){
+  var parts = [], depth = 0, cur = '', q = null;
+  for (var i = 0; i < body.length; i++){
+    var ch = body[i];
+    if (q){ cur += ch; if (ch === q) q = null; continue; }
+    if (ch === "'" || ch === '"' || ch === '`'){ q = ch; cur += ch; continue; }
+    if (ch === '['){ q = ']'; cur += ch; continue; }
+    if (ch === '(') depth++;
+    if (ch === ')') depth--;
+    if (ch === ',' && depth === 0){ parts.push(cur.trim()); cur = ''; continue; }
+    cur += ch;
+  }
+  if (cur.trim()) parts.push(cur.trim());
+  return parts;
+}
+function unq(s){ return s.replace(/^["`\[]/, '').replace(/["`\]]$/, ''); }
+var ID = '("(?:[^"]|"")+"|`[^`]+`|\\[[^\\]]+\\]|[A-Za-z_][A-Za-z0-9_]*)';
+var DATE_RE = /CHECK\s*\(\s*["`\[]?(\w+)["`\]]?\s+IS\s+NULL\s+OR\s+["`\[]?\w+["`\]]?\s+GLOB\s+'\[0-9\]\[0-9\]\[0-9\]\[0-9\]-\[0-9\]\[0-9\]-\[0-9\]\[0-9\]'\s*\)/i;
+var BOOL_RE = /CHECK\s*\(\s*["`\[]?\w+["`\]]?\s+IN\s*\(\s*0\s*,\s*1\s*\)\s*\)/i;
+function parseCreate(sql){
+  var info = {cols:{}, ok:true, why:''};
+  var a = sql.indexOf('('), b = sql.lastIndexOf(')');
+  if (a < 0 || b < a){ info.ok = false; info.why = 'it could not be read'; return info; }
+  if (/WITHOUT\s+ROWID/i.test(sql.slice(b))){ info.ok = false; info.why = 'WITHOUT ROWID'; }
+  splitTop(stripComments(sql.slice(a + 1, b))).forEach(function(p){
+    var up = p.toUpperCase();
+    if (/^PRIMARY\s+KEY\b/.test(up)) return;
+    if (/^FOREIGN\s+KEY\s*\(\s*[^,)]+\)/.test(up) && !/\b(ON\s+(DELETE|UPDATE)|DEFERRABLE|MATCH)\b/.test(up)) return;
+    if (/^(CONSTRAINT|UNIQUE|CHECK|FOREIGN)\b/.test(up)){ info.ok = false; info.why = 'a table rule (' + p.split(/\s+/)[0] + ')'; return; }
+    var m = p.match(new RegExp('^' + ID + '\\s*([\\s\\S]*)$'));
+    if (!m){ info.ok = false; info.why = 'it could not be read'; return; }
+    var name = unq(m[1]), rest = m[2], c = {kind:null, unique:false};
+    if (DATE_RE.test(rest)){ c.kind = 'DATE'; rest = rest.replace(DATE_RE, ' '); }
+    if (BOOL_RE.test(rest)){ c.kind = 'YESNO'; rest = rest.replace(BOOL_RE, ' '); }
+    if (/\bUNIQUE\b/i.test(rest)){ c.unique = true; rest = rest.replace(/\bUNIQUE\b/ig, ' '); }
+    rest = rest.replace(new RegExp('\\bREFERENCES\\s+' + ID + '\\s*\\(\\s*[^)]*\\)', 'ig'), ' ')
+               .replace(/\bPRIMARY\s+KEY(\s+(ASC|DESC))?/ig, ' ').replace(/\bNOT\s+NULL\b/ig, ' ').replace(/\bNULL\b/ig, ' ').trim();
+    if (rest && !/^[A-Za-z]+(\s+[A-Za-z]+)?(\s*\(\s*\d+\s*(,\s*\d+\s*)?\))?$/.test(rest)){ info.ok = false; info.why = 'a rule on ' + name; }
+    info.cols[name] = c;
+  });
+  return info;
+}
+function baseKind(type){
+  var t = (type || '').toUpperCase();
+  if (/INT/.test(t)) return 'INTEGER';
+  if (/REAL|FLOA|DOUB|NUM|DEC/.test(t)) return 'REAL';
+  return 'TEXT';
+}
+function baseType(k){ return k === 'DATE' ? 'TEXT' : k === 'YESNO' ? 'INTEGER' : k; }
+function kindLabel(k){ return {TEXT:'text', INTEGER:'integer', REAL:'real', DATE:'date', YESNO:'yes/no'}[k] || 'text'; }
+
+/* ---------- writing CREATE TABLE ---------- */
+function ident(n){ return (/^[A-Za-z_][A-Za-z0-9_]*$/.test(n) && !RESERVED[n.toUpperCase()]) ? n : '"' + n.replace(/"/g, '""') + '"'; }
+function pad(s, w){ while (s.length < w) s += ' '; return s; }
+function createSql(spec, asName){
+  var pks = spec.cols.filter(function(c){ return c.pk; }).sort(function(a, b){ return a.pk - b.pk; });
+  var single = pks.length === 1;
+  var w = Math.max.apply(null, spec.cols.map(function(c){ return ident(c.name).length; }));
+  var defs = spec.cols.map(function(c){
+    var q = ident(c.name), bt = baseType(c.kind), s = pad(q, w) + ' ' + bt;
+    if (c.pk && single){ s += ' PRIMARY KEY'; if (bt !== 'INTEGER') s += ' NOT NULL'; }
+    else if (c.pk || c.notnull) s += ' NOT NULL';
+    if (c.unique && !c.pk) s += ' UNIQUE';
+    if (c.kind === 'DATE') s += ' CHECK (' + q + ' IS NULL OR ' + q + " GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]')";
+    if (c.kind === 'YESNO') s += ' CHECK (' + q + ' IN (0, 1))';
+    if (c.fk) s += ' REFERENCES ' + ident(c.fk.table) + '(' + ident(c.fk.to) + ')';
+    return {s:s, note:(c.note || '').replace(/[\r\n]+/g, ' ').replace(/\*\//g, '').trim()};
+  });
+  if (pks.length > 1) defs.push({s:'PRIMARY KEY (' + pks.map(function(c){ return ident(c.name); }).join(', ') + ')', note:''});
+  var lines = defs.map(function(d, i){
+    var line = '  ' + d.s + (i < defs.length - 1 ? ',' : '');
+    return d.note ? line + '   -- ' + d.note : line;
+  });
+  return 'CREATE TABLE ' + ident(asName || spec.name) + ' (\n' + lines.join('\n') + '\n);';
+}
+function specOf(t){
+  var fkBy = {};
+  t.fks.forEach(function(f){ fkBy[f.from] = {table:f.table, to:f.to}; });
+  return {name:t.name, cols:t.cols.map(function(c){
+    return {name:c.name, orig:c.name, kind:c.kind, pk:c.pk, notnull:!!c.notnull, unique:!!c.unique, note:c.note || '',
+            fk:fkBy[c.name] ? {table:fkBy[c.name].table, to:fkBy[c.name].to} : null};
+  })};
+}
+function rebuildSql(spec, oldName){
+  var tmp = '_sqllab_rebuild', old = byName(oldName), had = {};
+  if (old) old.cols.forEach(function(c){ had[c.name] = true; });
+  var keep = spec.cols.filter(function(c){ return c.orig && had[c.orig]; });
+  var out = [createSql(spec, tmp)];
+  if (keep.length) out.push('INSERT INTO ' + tmp + ' (' + keep.map(function(c){ return ident(c.name); }).join(', ') + ')\n  SELECT ' +
+                            keep.map(function(c){ return ident(c.orig); }).join(', ') + ' FROM ' + ident(oldName) + ';');
+  out.push('DROP TABLE ' + ident(oldName) + ';');
+  out.push('ALTER TABLE ' + tmp + ' RENAME TO ' + ident(spec.name) + ';');
+  return out;
+}
+
+/* ---------- running changes safely ---------- */
+function friendly(e){
+  var m = String(e && e.message || e);
+  var x;
+  if (/FOREIGN KEY constraint failed/i.test(m)) return 'A foreign key doesn’t match: it can only hold a value that already exists in the table it points to. (FOREIGN KEY constraint failed)';
+  if ((x = m.match(/NOT NULL constraint failed: ([\w"]+)\.([\w"]+)/i))) return x[2] + ' is required in ' + x[1] + ', so it needs a value. (NOT NULL constraint failed)';
+  if ((x = m.match(/UNIQUE constraint failed: ([\w".]+)/i))) return 'That ' + x[1] + ' value is already used; a key must be unique. (UNIQUE constraint failed)';
+  if ((x = m.match(/CHECK constraint failed:?\s*(.*)/i))){
+    var expr = x[1] || '', col = (expr.match(/^\s*["`\[]?(\w+)/) || [])[1];
+    if (/GLOB/i.test(expr)) return (col ? col + ' is a date, so it' : 'A date') + ' must look like 2026-11-23 (year-month-day). (CHECK constraint failed)';
+    if (/IN\s*\(\s*0\s*,\s*1\s*\)/i.test(expr)) return (col ? col + ' is yes/no, so it' : 'A yes/no column') + ' must be 1 (yes) or 0 (no). (CHECK constraint failed)';
+    return 'That value breaks a rule on ' + (col || 'the column') + ': ' + expr + ' (CHECK constraint failed)';
+  }
+  if (/datatype mismatch/i.test(m)) return 'An INTEGER primary key must be a whole number. (datatype mismatch)';
+  return m;
+}
+function runSteps(stmts, checkFk){
+  db.run('PRAGMA foreign_keys = OFF;');
+  try {
+    db.run('BEGIN;');
+    stmts.forEach(function(s){ db.run(s); });
+    if (checkFk){
+      var bad = db.exec('PRAGMA foreign_key_check;');
+      if (bad.length && bad[0].values.length){
+        var v = bad[0].values[0];
+        throw new Error(bad[0].values.length + ' row(s) in ' + v[0] + ' point to ' + v[2] + ' rows that don’t exist. Fix or delete those rows first, then try again.');
+      }
+    }
+    db.run('COMMIT;');
+    logSql(stmts);
+    dirty = true;
+  } catch (e){
+    try { db.run('ROLLBACK;'); } catch(e2){}
+    throw new Error(friendly(e));
+  } finally {
+    db.run('PRAGMA foreign_keys = ON;');
+  }
+}
+
+function checkName(n, what){
+  if (!n) throw new Error('Give the ' + what + ' a name.');
+  if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(n)) throw new Error('“' + n + '”: use letters, digits and _ only, starting with a letter (no spaces).');
+  if (n.length > 40) throw new Error('“' + n + '” is too long: 40 characters at most.');
+  if (RESERVED[n.toUpperCase()]) throw new Error(n.toUpperCase() + ' is a reserved word in SQL. Try another name, for example ' + n + 's.');
+  if (/^(sqlite_|_sqllab)/i.test(n)) throw new Error('Names can’t start with “' + n.slice(0, 7) + '”.');
+}
+function validateSpec(spec, oldName){
+  checkName(spec.name, 'table');
+  schema.forEach(function(t){
+    if (t.name !== oldName && t.name.toLowerCase() === spec.name.toLowerCase()) throw new Error('There is already a table named ' + t.name + '.');
+  });
+  if (!spec.cols.length) throw new Error('A table needs at least one column.');
+  var seen = {};
+  spec.cols.forEach(function(c){
+    checkName(c.name, 'column');
+    if (seen[c.name.toLowerCase()]) throw new Error('Two columns are named ' + c.name + '.');
+    seen[c.name.toLowerCase()] = true;
+  });
+}
+
+function saveTable(oldName, spec){
+  validateSpec(spec, oldName);
+  if (!oldName){
+    var s = createSql(spec);
+    runSteps([s], false);
+    return;
+  }
+  var t = byName(oldName), steps = [], ren = {};
+  spec.cols.forEach(function(c){ if (c.orig && c.orig !== c.name) ren[c.orig] = c.name; });
+  var gone = t.cols.filter(function(oc){ return !spec.cols.some(function(c){ return c.orig === oc.name; }); }).map(function(oc){ return oc.name; });
+  spec.cols.forEach(function(c){ if (c.fk && c.fk.table === oldName){ c.fk.table = spec.name; if (ren[c.fk.to]) c.fk.to = ren[c.fk.to]; } });
+  var children = schema.filter(function(ch){ return ch.name !== oldName && ch.fks.some(function(f){ return f.table === oldName; }); });
+  children.forEach(function(ch){
+    ch.fks.forEach(function(f){
+      if (f.table !== oldName) return;
+      if (gone.indexOf(f.to) >= 0) throw new Error(ch.name + '.' + f.from + ' points to ' + oldName + '.' + f.to + '. Delete that relationship before deleting the column.');
+      var nc = spec.cols.filter(function(c){ return c.orig === f.to; })[0];
+      var fc = ch.cols.filter(function(c){ return c.name === f.from; })[0];
+      if (nc && !nc.pk) throw new Error(ch.name + '.' + f.from + ' points to ' + oldName + '.' + f.to + ', so it has to stay the primary key.');
+      if (nc && fc && baseType(nc.kind) !== baseType(fc.kind)) throw new Error(ch.name + '.' + f.from + ' points to ' + oldName + '.' + f.to + ' and must have the same type (' + baseType(fc.kind) + ').');
+    });
+  });
+  if (spec.name !== oldName) steps.push('ALTER TABLE ' + ident(oldName) + ' RENAME TO ' + ident(spec.name) + ';');
+  steps = steps.concat(rebuildSql(spec, oldName).map(function(s){ return s.replace('FROM ' + ident(oldName) + ';', 'FROM ' + ident(spec.name) + ';').replace('DROP TABLE ' + ident(oldName) + ';', 'DROP TABLE ' + ident(spec.name) + ';'); }));
+  children.forEach(function(ch){
+    if (!ch.fks.some(function(f){ return f.table === oldName && ren[f.to]; })) return;
+    if (!ch.editable) throw new Error(ch.name + ' was written in SQL with rules the builder can’t keep, so a column it points to can’t be renamed here.');
+    var cs = specOf(ch);
+    cs.cols.forEach(function(c){ if (c.fk && c.fk.table === oldName){ c.fk.table = spec.name; if (ren[c.fk.to]) c.fk.to = ren[c.fk.to]; } });
+    steps = steps.concat(rebuildSql(cs, ch.name));
+  });
+  runSteps(steps, true);
+  // carry the layout and relationship notes over to the new names
+  if (design.pos[oldName] && spec.name !== oldName){ design.pos[spec.name] = design.pos[oldName]; delete design.pos[oldName]; }
+  if (pos[oldName] && spec.name !== oldName){ pos[spec.name] = pos[oldName]; delete pos[oldName]; }
+  var rels = {};
+  Object.keys(design.rels).forEach(function(k){
+    var dot = k.indexOf('.'), tn = k.slice(0, dot), cn = k.slice(dot + 1);
+    if (tn === oldName){ if (gone.indexOf(cn) >= 0) return; tn = spec.name; cn = ren[cn] || cn; }
+    rels[tn + '.' + cn] = design.rels[k];
+  });
+  design.rels = rels;
+  design.mn.forEach(function(m){ if (m.a === oldName) m.a = spec.name; if (m.b === oldName) m.b = spec.name; });
+  if (metaExists() || Object.keys(design.rels).length || design.mn.length) saveDesign();
+}
+
+function deleteTable(name){
+  var users = schema.filter(function(ch){ return ch.name !== name && ch.fks.some(function(f){ return f.table === name; }); });
+  if (users.length) throw new Error(users.map(function(u){ return u.name; }).join(' and ') + ' point' + (users.length > 1 ? '' : 's') + ' to ' + name + '. Delete those relationships first.');
+  runSteps(['DROP TABLE ' + ident(name) + ';'], false);
+  delete design.pos[name]; delete pos[name];
+  Object.keys(design.rels).forEach(function(k){ if (k.indexOf(name + '.') === 0) delete design.rels[k]; });
+  design.mn = design.mn.filter(function(m){ return m.a !== name && m.b !== name; });
+  if (metaExists()) saveDesign();
+}
+
+function addRelationship(r){
+  if (r.kind === 'MN'){
+    if (!byName(r.a) || !byName(r.b)) throw new Error('Pick two tables.');
+    if (r.a === r.b) throw new Error('Pick two different tables.');
+    design.mn.push({a:r.a, b:r.b, aMin:+r.aMin || 0, bMin:+r.bMin || 0, name:(r.name || '').trim()});
+    saveDesign();
+    logSql(['-- Many-to-many sketch between ' + r.a + ' and ' + r.b + ': saved in the diagram only.\n-- A database can’t store it directly; replace it with a composite entity (a table that holds both keys).']);
+    return;
+  }
+  var parent = byName(r.parent), child = byName(r.child);
+  if (!parent || !child) throw new Error('Pick both tables.');
+  var pks = parent.cols.filter(function(c){ return c.pk > 0; });
+  if (!pks.length) throw new Error(parent.name + ' has no primary key yet. Tick PK on one of its columns first.');
+  if (pks.length > 1) throw new Error(parent.name + ' has a two-column primary key, so it can’t be the “one” side here.');
+  if (!child.editable) throw new Error(child.name + ' was written in SQL with rules the builder can’t keep; add this relationship in the Query tab.');
+  var pk = pks[0], cs = specOf(child), col;
+  if (r.fk === '__new__'){
+    var nm = (r.newName || pk.name).trim();
+    checkName(nm, 'new column');
+    if (cs.cols.some(function(c){ return c.name.toLowerCase() === nm.toLowerCase(); })) throw new Error(child.name + ' already has a column named ' + nm + '. Pick it from the list, or type another name.');
+    col = {name:nm, orig:null, kind:pk.kind, pk:0, notnull:!!r.required, unique:r.kind === '11', note:'', fk:null};
+    cs.cols.push(col);
+  } else {
+    col = cs.cols.filter(function(c){ return c.name === r.fk; })[0];
+    if (!col) throw new Error('Pick the foreign key column.');
+    if (col.fk) throw new Error(child.name + '.' + col.name + ' already points to ' + col.fk.table + '.');
+    if (baseType(col.kind) !== baseType(pk.kind)) throw new Error('A foreign key must have the same type as the key it points to: ' + parent.name + '.' + pk.name + ' is ' +
+      baseType(pk.kind) + ', but ' + child.name + '.' + col.name + ' is ' + baseType(col.kind) + '. Change one of them first.');
+    if (!col.pk) col.notnull = !!r.required;
+    if (r.kind === '11' && !col.pk) col.unique = true;
+  }
+  col.fk = {table:parent.name, to:pk.name};
+  runSteps(rebuildSql(cs, child.name), true);
+  design.rels[child.name + '.' + col.name] = {name:(r.name || '').trim(), childMin:+r.childMin || 0};
+  saveDesign();
+}
+function deleteRelationship(tname, cname){
+  var t = byName(tname), cs = specOf(t);
+  cs.cols.forEach(function(c){ if (c.name === cname){ c.fk = null; c.unique = false; } });
+  runSteps(rebuildSql(cs, tname), false);
+  delete design.rels[tname + '.' + cname];
+  if (metaExists()) saveDesign();
+}
+
+/* ---------- the Design tab ---------- */
+function blankCol(){ return {name:'', orig:null, kind:'TEXT', pk:0, notnull:false, unique:false, note:'', fk:null}; }
+function openTable(name){
+  dState.msg = null; dState.arm = null;
+  if (name === '__new__'){ dState.table = '__new__'; dState.draft = {oldName:null, name:'', cols:[blankCol()]}; }
+  else {
+    var t = byName(name); if (!t) return;
+    var s = specOf(t);
+    dState.table = name; dState.draft = {oldName:name, name:name, cols:s.cols, editable:t.editable, why:t.why};
+  }
+  renderDesign();
+}
+function msgEl(){
+  if (!dState.msg) return null;
+  return h('p', {class:'msg ' + (dState.msg.err ? 'bad' : 'good'), role:dState.msg.err ? 'alert' : 'status', text:dState.msg.text});
+}
+function renderEditor(){
+  var d = dState.draft, ro = d.oldName && !d.editable;
+  var box = h('div', {class:'editor'});
+  var nameIn = h('input', {type:'text', value:d.name, placeholder:'TableName', 'aria-label':'Table name', maxlength:'40'});
+  nameIn.addEventListener('input', function(){ d.name = nameIn.value.trim(); });
+  if (ro) nameIn.disabled = true;
+  box.append(h('div', {class:'row1'}, h('label', {class:'label', text:'Table'}), nameIn,
+    ro ? h('span', {class:'note', text:'Written in SQL with ' + (d.why || 'rules') + ' the builder can’t keep: view only. Change it in the Query tab.'}) : null));
+  var tb = h('tbody');
+  d.cols.forEach(function(c, i){
+    var nm = h('input', {type:'text', value:c.name, placeholder:'ColumnName', 'aria-label':'Column name', maxlength:'40'});
+    nm.addEventListener('input', function(){ c.name = nm.value.trim(); });
+    var ty = h('select', {'aria-label':'Type'}, KINDS.map(function(k){ var o = h('option', {value:k[0], text:k[1]}); if (k[0] === c.kind) o.selected = true; return o; }));
+    ty.addEventListener('change', function(){ c.kind = ty.value; });
+    if (c.fk){ ty.disabled = true; ty.title = 'A foreign key keeps the type of the key it points to.'; }
+    var pk = h('input', {type:'checkbox', 'aria-label':'Primary key'}); pk.checked = !!c.pk;
+    pk.addEventListener('change', function(){ c.pk = pk.checked ? 1 : 0; renderDesign(); });
+    var rq = h('input', {type:'checkbox', 'aria-label':'Required'}); rq.checked = !!(c.notnull || c.pk);
+    if (c.pk) rq.disabled = true;
+    rq.addEventListener('change', function(){ c.notnull = rq.checked; });
+    var nt = h('input', {type:'text', value:c.note, placeholder:'what it means', 'aria-label':'Meaning'});
+    nt.addEventListener('input', function(){ c.note = nt.value; });
+    var up = h('button', {class:'mini', type:'button', title:'Move up', 'aria-label':'Move up', onclick:function(){ if (i > 0){ d.cols.splice(i - 1, 0, d.cols.splice(i, 1)[0]); renderDesign(); } }}, '↑');
+    var del = h('button', {class:'mini', type:'button', title:'Delete column', 'aria-label':'Delete column', onclick:function(){ d.cols.splice(i, 1); renderDesign(); }}, '✕');
+    if (ro) [nm, ty, pk, rq, nt, up, del].forEach(function(x){ x.disabled = true; });
+    tb.append(h('tr', null, h('td', null, nm), h('td', null, ty), h('td', {class:'cb'}, pk), h('td', {class:'cb'}, rq), h('td', null, nt),
+      h('td', {class:'fkc', text:c.fk ? '→ ' + c.fk.table : ''}), h('td', {class:'act'}, up, del)));
+  });
+  box.append(h('div', {class:'scroll wide'}, h('table', {class:'cols'},
+    h('thead', null, h('tr', null, h('th', {text:'Column'}), h('th', {text:'Type'}), h('th', {text:'PK'}), h('th', {text:'Required'}),
+      h('th', {text:'Meaning (metadata)'}), h('th', {text:'Points to'}), h('th', {text:''}))), tb)));
+  if (!ro){
+    var bar = h('div', {class:'row2'});
+    bar.append(h('button', {class:'b', type:'button', onclick:function(){ d.cols.push(blankCol()); renderDesign(); var ins = $('#design').querySelectorAll('table.cols tbody tr'); var last = ins[ins.length - 1]; if (last) last.querySelector('input').focus(); }}, '+ Add column'));
+    bar.append(h('button', {class:'b primary', type:'button', onclick:function(){ saveDraft(); }}, d.oldName ? 'Save changes' : 'Create table'));
+    bar.append(h('button', {class:'b', type:'button', onclick:function(){ dState.table = null; dState.draft = null; dState.msg = null; renderDesign(); }}, 'Close'));
+    if (d.oldName){
+      var armed = dState.arm === 'table:' + d.oldName;
+      bar.append(h('button', {class:'b danger', type:'button', onclick:function(){
+        if (!armed){ dState.arm = 'table:' + d.oldName; renderDesign(); return; }
+        try { deleteTable(d.oldName); dState.table = null; dState.draft = null; dState.msg = {err:false, text:'Deleted ' + d.oldName + '.'}; refreshAll(); }
+        catch (e){ dState.arm = null; dState.msg = {err:true, text:e.message}; renderDesign(); }
+      }}, armed ? 'Click again to delete ' + d.oldName : 'Delete table'));
+    }
+    box.append(bar);
+    if (!d.cols.some(function(c){ return c.pk; })) box.append(h('p', {class:'note', text:'Tip: every table needs a primary key (PK): one column, or two together, that is unique for each row.'}));
+  }
+  var m = msgEl(); if (m && dState.table) box.append(m);
+  return box;
+}
+function saveDraft(){
+  var d = dState.draft, n = 0;
+  var spec = {name:d.name, cols:d.cols.map(function(c){ return {name:c.name, orig:c.orig, kind:c.kind, pk:c.pk ? ++n : 0, notnull:!!c.notnull, unique:!!c.unique, note:c.note, fk:c.fk ? {table:c.fk.table, to:c.fk.to} : null}; })};
+  try {
+    var before = d.oldName ? byName(d.oldName).count : 0;
+    saveTable(d.oldName, spec);
+    dState.table = spec.name;
+    dState.msg = {err:false, text:d.oldName ? 'Saved ' + spec.name + (before ? '; its ' + before + ' row' + (before === 1 ? '' : 's') + ' were kept.' : '.') : 'Created ' + spec.name + '. It is in the diagram now.'};
+    refreshAll();
+    openTableKeepMsg(spec.name);
+  } catch (e){
+    dState.msg = {err:true, text:e.message};
+    renderDesign();
+  }
+}
+function openTableKeepMsg(name){ var keep = dState.msg; openTable(name); dState.msg = keep; renderDesign(); }
+
+function relSentence(r){
+  var many = function(min){ return min ? 'one or many' : 'zero or many'; };
+  var one = function(min){ return min ? 'exactly one' : 'zero or one'; };
+  if (r.kind === 'MN') return 'Each ' + r.a + ' row has ' + many(r.bMin) + ' ' + r.b + ' rows. Each ' + r.b + ' row has ' + many(r.aMin) + ' ' + r.a + ' rows.';
+  var childPart = r.kind === '11' ? one(r.childMin) : many(r.childMin);
+  return 'Each ' + r.parent + ' row has ' + childPart + ' ' + r.child + (r.kind === '11' ? ' row' : ' rows') + '. Each ' + r.child + ' row belongs to ' + one(r.required) + ' ' + r.parent + '.';
+}
+function defaultRel(pre){
+  var names = schema.map(function(t){ return t.name; });
+  var f = {kind:'1M', parent:names[0] || '', child:names[1] || names[0] || '', fk:'__new__', newName:'', required:1, childMin:0, name:'', a:names[0] || '', b:names[1] || '', aMin:0, bMin:0};
+  if (pre) Object.keys(pre).forEach(function(k){ f[k] = pre[k]; });
+  return f;
+}
+function renderRelForm(){
+  var f = dState.relForm, names = schema.map(function(t){ return t.name; });
+  var box = h('div', {class:'relform'});
+  function sel(value, opts, onchange, label){
+    var s = h('select', {'aria-label':label}, opts.map(function(o){ var v = Array.isArray(o) ? o[0] : o, t = Array.isArray(o) ? o[1] : o; var el = h('option', {value:v, text:t}); if (String(v) === String(value)) el.selected = true; return el; }));
+    s.addEventListener('change', function(){ onchange(s.value); renderDesign(); });
+    return s;
+  }
+  box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Kind'}),
+    sel(f.kind, [['1M', 'One-to-many'], ['11', 'One-to-one'], ['MN', 'Many-to-many (sketch)']], function(v){ f.kind = v; }, 'Kind of relationship')));
+  if (f.kind === 'MN'){
+    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Tables'}), sel(f.a, names, function(v){ f.a = v; }, 'First table'), h('span', {text:'and'}), sel(f.b, names, function(v){ f.b = v; }, 'Second table')));
+    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Each ' + f.a + ' has'}), sel(f.bMin, [[0, 'zero or many'], [1, 'one or many']], function(v){ f.bMin = +v; }, 'Minimum'), h('span', {text:f.b}) ));
+    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Each ' + f.b + ' has'}), sel(f.aMin, [[0, 'zero or many'], [1, 'one or many']], function(v){ f.aMin = +v; }, 'Minimum'), h('span', {text:f.a}) ));
+  } else {
+    var parent = byName(f.parent), pks = parent ? parent.cols.filter(function(c){ return c.pk > 0; }) : [];
+    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'The “one” side'}), sel(f.parent, names, function(v){ f.parent = v; f.fk = '__new__'; f.newName = ''; }, 'Parent table'),
+      h('span', {class:'note', text:pks.length === 1 ? 'key: ' + pks[0].name : pks.length ? 'has a two-column key' : 'has no primary key yet'})));
+    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:f.kind === '11' ? 'The other side' : 'The “many” side'}), sel(f.child, names, function(v){ f.child = v; f.fk = '__new__'; f.newName = ''; }, 'Child table')));
+    var child = byName(f.child), opts = [['__new__', 'New column' + (pks.length === 1 ? ': ' + pks[0].name : '')]];
+    if (child) child.cols.forEach(function(c){ if (!child.fks.some(function(x){ return x.from === c.name; })) opts.push([c.name, c.name + ' (' + kindLabel(c.kind) + ')']); });
+    var fkRow = h('div', {class:'frow'}, h('span', {class:'flab', text:'Foreign key in ' + f.child}), sel(f.fk, opts, function(v){ f.fk = v; }, 'Foreign key column'));
+    if (f.fk === '__new__'){
+      var nn = h('input', {type:'text', value:f.newName || (pks.length === 1 ? pks[0].name : ''), 'aria-label':'New column name', maxlength:'40'});
+      nn.addEventListener('input', function(){ f.newName = nn.value.trim(); });
+      fkRow.append(nn);
+    }
+    box.append(fkRow);
+    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Each ' + f.child + ' belongs to'}),
+      sel(f.required, [[1, 'exactly one ' + f.parent + ' (required)'], [0, 'zero or one ' + f.parent + ' (optional)']], function(v){ f.required = +v; }, 'Required')));
+    box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Each ' + f.parent + ' has'}),
+      sel(f.childMin, f.kind === '11' ? [[0, 'zero or one ' + f.child], [1, 'exactly one ' + f.child]] : [[0, 'zero or many ' + f.child], [1, 'one or many ' + f.child]], function(v){ f.childMin = +v; }, 'Minimum'),
+      h('span', {class:'note', text:'(shown in the diagram; the database can’t enforce it)'})));
+  }
+  var nm = h('input', {type:'text', value:f.name, placeholder:'e.g. holds', 'aria-label':'Relationship name', maxlength:'30'});
+  nm.addEventListener('input', function(){ f.name = nm.value; });
+  box.append(h('div', {class:'frow'}, h('span', {class:'flab', text:'Name (a verb)'}), nm));
+  box.append(h('p', {class:'sentence', text:relSentence(f)}));
+  if (f.kind === 'MN') box.append(h('p', {class:'note', text:'A database can’t store many-to-many directly. It is drawn as a dashed line until you replace it with a composite entity: a table that holds both keys (D2).'}));
+  var bar = h('div', {class:'row2'});
+  bar.append(h('button', {class:'b primary', type:'button', onclick:function(){
+    try { addRelationship(f); dState.relForm = null; dState.msg = {err:false, text:'Relationship added. ' + relSentence(f)}; refreshAll(); }
+    catch (e){ dState.msg = {err:true, text:e.message}; renderDesign(); }
+  }}, 'Create relationship'));
+  bar.append(h('button', {class:'b', type:'button', onclick:function(){ dState.relForm = null; dState.msg = null; renderDesign(); }}, 'Cancel'));
+  box.append(bar);
+  return box;
+}
+function relItems(){
+  var items = [];
+  relationships().forEach(function(r){
+    var col = r.child.cols.filter(function(c){ return c.name === r.from; })[0] || {};
+    var meta = design.rels[r.child.name + '.' + r.from] || {};
+    items.push({kind:r.one ? '11' : '1M', parent:r.parent.name, child:r.child.name, from:r.from, to:r.to, required:col.notnull || col.pk ? 1 : 0, childMin:meta.childMin || 0, name:meta.name || '', editable:r.child.editable});
+  });
+  design.mn.forEach(function(m, i){ items.push({kind:'MN', a:m.a, b:m.b, aMin:m.aMin, bMin:m.bMin, name:m.name, idx:i, editable:true}); });
+  return items;
+}
+function renderRelList(){
+  var items = relItems();
+  if (!items.length) return h('p', {class:'note', text:'No relationships yet. Use the button below, or drag a column onto another table’s key in the Relationships tab.'});
+  var ul = h('ul', {class:'rellist'});
+  items.forEach(function(it){
+    var key = it.kind === 'MN' ? 'mn:' + it.idx : 'fk:' + it.child + '.' + it.from, armed = dState.arm === key;
+    var del = h('button', {class:'mini danger', type:'button', onclick:function(){
+      if (!armed){ dState.arm = key; renderDesign(); return; }
+      try {
+        if (it.kind === 'MN'){ design.mn.splice(it.idx, 1); saveDesign(); }
+        else deleteRelationship(it.child, it.from);
+        dState.arm = null; dState.msg = {err:false, text:'Relationship deleted.' + (it.kind === 'MN' ? '' : ' The column ' + it.child + '.' + it.from + ' stays; only the link is gone.')};
+        refreshAll();
+      } catch (e){ dState.arm = null; dState.msg = {err:true, text:e.message}; renderDesign(); }
+    }}, armed ? 'Click again to delete' : 'Delete');
+    if (!it.editable) del.disabled = true;
+    var how = it.kind === 'MN' ? 'many-to-many sketch: not built yet' : it.child + '.' + it.from + ' → ' + it.parent + '.' + it.to;
+    ul.append(h('li', {class:it.kind === 'MN' ? 'mnitem' : ''}, h('div', null, h('strong', {text:(it.name ? '“' + it.name + '” · ' : '')}), relSentence(it)),
+      h('div', {class:'how'}, h('span', {text:how}), del)));
+  });
+  return ul;
+}
+function renderDesign(){
+  var box = $('#design'); if (!box) return;
+  box.replaceChildren();
+  if (!editableDb()){
+    box.append(h('p', {class:'lead'}, 'The course database is for querying, so its design is locked here. To build your own tables and relationships, choose ',
+      h('strong', {text:'Empty database'}), ' in the Database list.'));
+    return;
+  }
+  box.append(h('p', {class:'lead', text:'Build tables and relationships here, no SQL needed. Every change is saved as real SQL (see the log at the bottom), and the diagram updates as you go.'}));
+  var chips = h('div', {class:'chips'});
+  schema.forEach(function(t){
+    chips.append(h('button', {class:'chip' + (dState.table === t.name ? ' on' : ''), type:'button', title:t.editable ? 'Edit ' + t.name : 'Written in SQL: view only here', onclick:function(){ openTable(t.name); }}, t.name + (t.editable ? '' : ' (SQL)')));
+  });
+  chips.append(h('button', {class:'b primary', type:'button', onclick:function(){ openTable('__new__'); }}, '+ New table'));
+  box.append(h('h3', {class:'dh', text:'Tables'}), chips);
+  if (dState.table && dState.draft) box.append(renderEditor());
+  box.append(h('h3', {class:'dh', text:'Relationships'}), renderRelList());
+  if (!dState.relForm) box.append(h('p', null, h('button', {class:'b', type:'button', onclick:function(){
+    if (schema.length < 1){ dState.msg = {err:true, text:'Create at least one table first.'}; renderDesign(); return; }
+    dState.relForm = defaultRel(); dState.msg = null; renderDesign();
+  }}, '+ New relationship')));
+  if (dState.relForm) box.append(renderRelForm());
+  var m = msgEl(); if (m && !dState.table) box.append(m);
+  box.append(h('details', {class:'logbox'}, h('summary', {text:'SQL the builder ran in this session (' + sqlLog.length + ')'}),
+    h('pre', {class:'log', text:sqlLog.length ? sqlLog.join('\n\n') : 'Nothing yet.'})));
+}
+
+/* ---------- drag a column onto a key to relate two tables ---------- */
+function linkDropped(src, dst){
+  if (src.t === dst.t && src.c === dst.c) return;
+  var st = byName(src.t), dt = byName(dst.t);
+  if (!st || !dt) return;
+  var sc = st.cols.filter(function(c){ return c.name === src.c; })[0];
+  var sPk = sc.pk > 0 && st.cols.filter(function(c){ return c.pk > 0; }).length === 1;
+  var pre;
+  if (dst.c == null){
+    /* a key dropped on another table's title: that table gets a new foreign key column */
+    if (!sPk || src.t === dst.t){
+      dState.relForm = null;
+      dState.msg = {err:true, text:'To give ' + dst.t + ' a new foreign key, drag ' + src.t + '’s primary key (PK) onto ' + dst.t + '’s title.'};
+      select('design'); renderDesign(); return;
+    }
+    pre = {parent:src.t, child:dst.t, fk:'__new__', kind:'1M'};
+    dState.relForm = defaultRel(pre); dState.msg = null; dState.table = null; dState.draft = null;
+    select('design'); renderDesign(); return;
+  }
+  var dc = dt.cols.filter(function(c){ return c.name === dst.c; })[0];
+  var dPk = dc.pk > 0 && dt.cols.filter(function(c){ return c.pk > 0; }).length === 1;
+  if (dPk && !sPk) pre = {parent:dst.t, child:src.t, fk:src.c};
+  else if (sPk && !dPk) pre = {parent:src.t, child:dst.t, fk:dst.c};
+  else if (dPk && sPk) pre = {parent:dst.t, child:src.t, fk:src.c, kind:'11'};
+  else {
+    dState.relForm = null;
+    dState.msg = {err:true, text:'Drop a column onto a primary key (PK), or drag a PK onto another table’s title to add a new foreign key there. If ' + dst.t + ' has no primary key yet, tick PK on one of its columns.'};
+    select('design'); renderDesign(); return;
+  }
+  if (!pre.kind) pre.kind = '1M';
+  dState.relForm = defaultRel(pre); dState.msg = null; dState.table = null; dState.draft = null;
+  select('design'); renderDesign();
+  var f = $('#design .relform'); if (f && f.scrollIntoView) f.scrollIntoView({block:'center'});
+}
+function enableLink(el, tname, cname){
+  el.addEventListener('pointerdown', function(e){
+    if (!editableDb() || e.button > 0) return;
+    e.preventDefault(); e.stopPropagation();
+    try { el.setPointerCapture(e.pointerId); } catch(x){}
+    var r0 = $('#stage').getBoundingClientRect(), moved = false, over = null;
+    var line = sv('line', {class:'dragline', x1:e.clientX - r0.left, y1:e.clientY - r0.top, x2:e.clientX - r0.left, y2:e.clientY - r0.top});
+    svgEl.append(line);
+    function target(ev){ var hit = document.elementFromPoint(ev.clientX, ev.clientY); return hit && hit.closest ? hit.closest('.tbox .col, .tbox .hd') : null; }
+    function mv(ev){
+      moved = true;
+      var r = $('#stage').getBoundingClientRect();
+      line.setAttribute('x2', ev.clientX - r.left); line.setAttribute('y2', ev.clientY - r.top);
+      var t = target(ev);
+      if (over && over !== t) over.classList.remove('drop');
+      over = t; if (over && over !== el) over.classList.add('drop');
+    }
+    function up(ev){
+      el.removeEventListener('pointermove', mv); el.removeEventListener('pointerup', up); el.removeEventListener('pointercancel', up);
+      line.remove(); if (over) over.classList.remove('drop');
+      if (!moved) return;
+      var t = target(ev);
+      if (t && t !== el) linkDropped({t:tname, c:cname}, {t:t.dataset.t, c:t.dataset.c == null ? null : t.dataset.c});
+    }
+    el.addEventListener('pointermove', mv); el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+  });
+}
+
+/* ---------- crow's foot marks ---------- */
+function endMark(x, y, dir, min, max){
+  var g = [];
+  if (max === 'many'){ var tip = x + dir * 16; [-8, 0, 8].forEach(function(k){ g.push(sv('line', {x1:tip, y1:y, x2:x, y2:y + k})); }); }
+  else g.push(sv('line', {x1:x + dir * 9, y1:y - 8, x2:x + dir * 9, y2:y + 8}));
+  if (min === 0) g.push(sv('circle', {cx:x + dir * 25, cy:y, r:5, class:'o'}));
+  else g.push(sv('line', {x1:x + dir * 23, y1:y - 8, x2:x + dir * 23, y2:y + 8}));
+  return g;
+}
+
+/* ---------- adding and deleting rows in Browse ---------- */
+function rowForm(t){
+  var single = t.cols.filter(function(c){ return c.pk > 0; }).length === 1;
+  var fkTo = {}; t.fks.forEach(function(f){ fkTo[f.from] = f.table; });
+  var ins = t.cols.map(function(c){
+    var auto = single && c.pk > 0 && baseType(c.kind) === 'INTEGER';
+    var ph = auto ? 'auto' : fkTo[c.name] ? '→ ' + fkTo[c.name] : c.kind === 'DATE' ? 'YYYY-MM-DD' : c.kind === 'YESNO' ? '0 or 1' : kindLabel(c.kind);
+    return {c:c, auto:auto, el:h('input', {type:'text', placeholder:ph, 'aria-label':c.name})};
+  });
+  var status = h('p', {class:'msg', role:'status'});
+  var form = h('form', {class:'rowform'}, h('h3', {class:'dh', text:'Add a row'}),
+    h('div', {class:'rfgrid'}, ins.map(function(x){ return h('label', null, h('span', {text:x.c.name + (x.c.notnull || (x.c.pk && !x.auto) ? ' *' : '')}), x.el); })),
+    h('div', {class:'row2'}, h('button', {class:'b primary', type:'submit'}, 'Add row'), h('span', {class:'note', text:'* required. Leave an auto ID blank.'})), status);
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var cols = [], vals = [];
+    ins.forEach(function(x){
+      var v = x.el.value.trim();
+      if (v === '' && x.auto) return;
+      if (v === '') v = null;
+      else if (x.c.kind === 'YESNO'){ var l = v.toLowerCase(); v = /^(1|y|yes|true)$/.test(l) ? 1 : /^(0|n|no|false)$/.test(l) ? 0 : v; }
+      else if ((x.c.kind === 'INTEGER' || x.c.kind === 'REAL') && /^-?\d+(\.\d+)?$/.test(v)) v = Number(v);
+      cols.push(ident(x.c.name)); vals.push(v);
+    });
+    try {
+      if (cols.length) db.run('INSERT INTO ' + ident(t.name) + ' (' + cols.join(', ') + ') VALUES (' + cols.map(function(){ return '?'; }).join(', ') + ')', vals);
+      else db.run('INSERT INTO ' + ident(t.name) + ' DEFAULT VALUES');
+      dirty = true; refreshAll(); renderBrowse();
+      var st2 = $('#browse .rowform .msg'); if (st2){ st2.className = 'msg good'; st2.textContent = 'Row added.'; }
+      var first = $('#browse .rowform input'); if (first) first.focus();
+    } catch (err){
+      var text = friendly(err);
+      if (/FOREIGN KEY/i.test(err.message)){
+        /* say which value has no match */
+        t.fks.forEach(function(f){
+          var i = t.cols.findIndex(function(c){ return c.name === f.from; }), v = ins[i] && ins[i].el.value.trim();
+          if (!v) return;
+          try {
+            var hit = db.exec('SELECT 1 FROM ' + ident(f.table) + ' WHERE ' + ident(f.to) + ' = ? LIMIT 1', [/^-?\d+(\.\d+)?$/.test(v) ? Number(v) : v]);
+            if (!hit.length) text = f.from + ' ' + v + ' doesn’t exist in ' + f.table + ' yet. A foreign key can only hold a value that is already in the table it points to. (FOREIGN KEY constraint failed)';
+          } catch(e2){}
+        });
+      }
+      status.className = 'msg bad'; status.textContent = text;
+    }
+  });
+  return form;
+}
+function editableRows(t){
+  var r = db.exec('SELECT rowid AS _rid, * FROM ' + ident(t.name) + ' LIMIT 200');
+  if (!r.length) return h('p', {class:'note', text:'This table has no rows yet.'});
+  var cols = r[0].columns.slice(1);
+  var status = h('p', {class:'msg', role:'status'});
+  var tbody = h('tbody', null, r[0].values.map(function(v){
+    var rid = v[0];
+    var del = h('button', {class:'mini', type:'button', title:'Delete this row', 'aria-label':'Delete this row', onclick:function(){
+      try { db.run('DELETE FROM ' + ident(t.name) + ' WHERE rowid = ?', [rid]); dirty = true; refreshAll(); renderBrowse(); }
+      catch (err){
+        var users = schema.filter(function(ch){ return ch.fks.some(function(f){ return f.table === t.name; }); }).map(function(ch){ return ch.name; });
+        status.className = 'msg bad';
+        status.textContent = /FOREIGN KEY/i.test(err.message)
+          ? 'Other rows point to this row' + (users.length ? ' (in ' + users.join(' or ') + ')' : '') + ', so it can’t be deleted. Delete or change those rows first. (FOREIGN KEY constraint failed)'
+          : friendly(err);
+      }
+    }}, '✕');
+    return h('tr', null, h('td', {class:'act'}, del), v.slice(1).map(function(x){
+      if (x === null) return h('td', {class:'null', text:'NULL'});
+      if (typeof x === 'number') return h('td', {class:'num', text:fmtNum(x)});
+      return h('td', {text:String(x)});
+    }));
+  }));
+  return h('div', null, h('div', {class:'scroll'}, h('table', {class:'data'}, h('thead', null, h('tr', null, h('th', {text:''}), cols.map(function(c){ return h('th', {text:c}); }))), tbody)), status);
+}
+
 
 /* Browser check: runs only in the "check" build. Exercises the real page and lists PASS/FAIL. */
 function selfTest(){
@@ -932,6 +1773,42 @@ function selfTest(){
       clickRun('CREATE TABLE Owners (OwnerID INTEGER PRIMARY KEY, OwnerName TEXT);\nCREATE TABLE Boats (BoatID INTEGER PRIMARY KEY, OwnerID INTEGER NOT NULL REFERENCES Owners(OwnerID));');
       var b = document.querySelectorAll('.tbox').length, l = document.querySelectorAll('svg.links path').length;
       return [b === 2 && l === 1, b + ' boxes, ' + l + ' line'];
+    });
+    tryRec('Design tab: build two tables and a relationship without SQL', function(){
+      loadBuiltIn('empty');
+      saveTable(null, {name:'Owner', cols:[{name:'OwnerID', kind:'INTEGER', pk:1, note:'numbered by the database'}, {name:'OwnerName', kind:'TEXT', notnull:true}]});
+      saveTable(null, {name:'Boat', cols:[{name:'BoatID', kind:'INTEGER', pk:1}, {name:'Built', kind:'DATE'}, {name:'Motor', kind:'YESNO'}]});
+      refreshAll();
+      addRelationship({kind:'1M', parent:'Owner', child:'Boat', fk:'__new__', newName:'OwnerID', required:1, childMin:0, name:'owns'});
+      refreshAll();
+      var f = db.exec("SELECT \"table\" FROM pragma_foreign_key_list('Boat')"), l = document.querySelectorAll('svg.links path').length;
+      var named = Array.prototype.some.call(document.querySelectorAll('svg.links text.rn'), function(t){ return t.textContent === 'owns'; });
+      return [f.length && f[0].values[0][0] === 'Owner' && l === 1 && named, 'FK to ' + (f.length ? f[0].values[0][0] : 'none') + ', ' + l + ' line, name shown ' + named];
+    });
+    tryRec('Design tab: the rules work (date format, required, foreign key)', function(){
+      db.run("INSERT INTO Owner (OwnerName) VALUES ('Dana')");
+      var bad = 0;
+      ["INSERT INTO Boat (Built, OwnerID) VALUES ('11/23/2026', 1)", "INSERT INTO Boat (OwnerID) VALUES (9)", "INSERT INTO Owner (OwnerName) VALUES (NULL)", "INSERT INTO Boat (Motor, OwnerID) VALUES (2, 1)"]
+        .forEach(function(q){ try { db.run(q); } catch(e){ bad++; } });
+      db.run("INSERT INTO Boat (Built, Motor, OwnerID) VALUES ('2026-11-23', 1, 1)");
+      return [bad === 4, bad + ' of 4 bad rows refused'];
+    });
+    tryRec('Design tab: rename a table and its key, rows and links kept', function(){
+      saveTable('Owner', {name:'Owners', cols:[{name:'OwnerNo', orig:'OwnerID', kind:'INTEGER', pk:1}, {name:'OwnerName', orig:'OwnerName', kind:'TEXT', notnull:true}]});
+      refreshAll();
+      var j = one('SELECT o.OwnerName FROM Boat b JOIN Owners o ON o.OwnerNo = b.OwnerID');
+      var to = one("SELECT \"to\" FROM pragma_foreign_key_list('Boat')"), chk = db.exec('PRAGMA foreign_key_check').length;
+      return [j === 'Dana' && to === 'OwnerNo' && chk === 0, 'join ' + j + ', Boat points to ' + to];
+    });
+    tryRec('Design tab: layout and names travel in the downloaded file', function(){
+      persistLayout();
+      var copy = new SQL.Database(exportDb()), v = copy.exec("SELECT value FROM _sqllab_design WHERE key='design'"); copy.close();
+      var d = v.length ? JSON.parse(v[0].values[0][0]) : {};
+      return [d.pos && d.pos.Owners && d.rels && d.rels['Boat.OwnerID'] && d.rels['Boat.OwnerID'].name === 'owns', Object.keys(d.pos || {}).join(', ')];
+    });
+    tryRec('Crow’s foot line ends draw', function(){
+      var was = notation; notation = 'crow'; drawLinks(); var n = document.querySelectorAll('svg.links circle.o').length; notation = was; drawLinks();
+      return [n >= 1, n + ' circle(s)'];
     });
     tryRec('Back to the course database', function(){ loadBuiltIn('bluff'); return [one('SELECT COUNT(*) FROM Customers') === 24 && $('#dbname').textContent === 'Bluff Trail Outfitters', $('#dbname').textContent]; });
     tryRec('Browse shows what the columns mean', function(){
